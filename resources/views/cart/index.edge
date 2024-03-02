@@ -1,0 +1,46 @@
+@layout('layouts/main')
+@set('title','Cart')
+@section('body')
+  <!-- Main Content -->
+  <main class="container mx-auto py-8 px-4">
+    <h1 class="text-3xl font-semibold text-gray-800 mb-4">Your Shopping Cart</h1>
+    <!-- Cart Items -->
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+      <!-- Sample Cart Item -->
+      @set('number',0)
+      @set('price',0)
+      @each(cart in carts)
+      <div class="flex items-center border-b border-gray-200 py-4 px-6">
+        <img src="product1.jpg" alt="Product Image" class="w-16 h-16 object-cover rounded">
+        <div class="ml-4 flex-1">
+          <h2 class="text-lg font-semibold text-gray-800">{{ cart.product.name }}</h2>
+          <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <div class="flex items-center justify-between mt-2">
+            <span class="text-gray-800 font-semibold">{{ cart.$extras.cart_groups * cart.product.price }}</span>
+            <div class="flex items-center space-x-2">
+              <button class="text-gray-600 hover:text-gray-800 focus:outline-none minus-btn"><i class="fas fa-minus"></i></button>
+              <span class="text-gray-800">{{ cart.$extras.cart_groups }}</span>
+              <button class="text-gray-600 hover:text-gray-800 focus:outline-none plus-btn"><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>
+      </script>
+      @set('price',cart.$extras.cart_groups * cart.product.price+price)
+      @set('number',cart.$extras.cart_groups+number)
+      @endeach
+      <!-- End Sample Cart Item -->
+      <!-- Repeat similar structure for other cart items -->
+    </div>
+    <!-- End Cart Items -->
+    <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
+      <i class="fas fa-plus mr-2"></i> Tumbas (  {{carts.length}}  )
+    </button>
+    <br>
+    {{ number }}
+    <br>
+    {{ price }}
+  </main>
+ 
+@endsection

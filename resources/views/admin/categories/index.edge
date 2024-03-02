@@ -1,0 +1,46 @@
+@layout('layouts/main')
+@set('title','Category')
+@section('body')
+  <form action="{{ route('CategoriesController.store') }}" method="post" enctype="multipart/form-data">
+    {{ csrfField() }}
+    <label for="">Category</label>
+    <input type="text" name="name" id="">
+    <label for="">Gambar</label>
+    <input type="file" name="image" id="">
+    <button type="submit">Submit</button>
+  </form>
+  @each(cat in category)
+  <a class="text-black" href="/category/{{ cat.slug }}"> {{ cat.name }}</a>
+  <img src="{{ cat.image }}" alt="" width="30px">
+  @endeach
+
+  <div class="max-w-4xl mx-auto">
+    <table class="min-w-full bg-white shadow-md rounded">
+        <thead class="bg-gray-800 text-white">
+            <tr>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Name</th>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Image</th>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="text-gray-700">
+            @each(cat in category)
+            <tr>
+                
+                <td class="py-3 px-4">John Doe</td>
+                <td class="py-3 px-4"><img src="{{ cat.image }}" alt="" width="30px"></td>
+                <td class="py-3 px-4">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" title="Edit">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" title="Delete">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+            @endeach
+           
+        </tbody>
+    </table>
+</div>
+@endsection

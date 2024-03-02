@@ -1,0 +1,8 @@
+@each(comment in comments)
+    <div class="bg-white p-4 rounded shadow mb-4">
+        <div class="mb-4">
+            <span class="font-bold">{{ comment.user.username }}</span>
+                <p class="text-gray-700">{{ comment.comments }}</p>
+        </div>
+    </div>
+@endeach

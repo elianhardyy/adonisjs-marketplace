@@ -1,0 +1,13 @@
+@layout('layouts/main')
+@set('title','Product')
+
+@section('body')
+  <h1>Product</h1>
+  @each(product in products)
+    {{ product.name }}
+    {{ product.category.name }}
+    <a href="{{ route('ProductsController.detail',{slug:product.store.slug, pslug:product.slug}) }}">Detila</a>
+    <img src="http://localhost:3333/{{ product.image }}" alt="">
+  @endeach
+  
+@endsection

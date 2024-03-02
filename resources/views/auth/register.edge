@@ -1,0 +1,36 @@
+@layout('layouts/main')
+@set('title','Register')
+@section('body')
+<div class="hero-register min-h-screen flex items-center justify-center bg-cover bg-center">
+    <div class="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg">
+      <h2 class="text-3xl font-semibold mb-4 text-center">Register</h2>
+      <form action="{{ route('AuthController.register') }}" method="POST" id="registerForm" class="space-y-4">
+        {{ csrfField() }}
+        <div>
+          <label for="username" class="block font-medium">Username</label>
+          <input type="text" id="username" name="username" class="form-input w-full rounded-md" required>
+          @if(flashMessages.has('errors.username'))
+            <p> {{ flashMessages.get('errors.username') }} </p>
+            @endif
+        </div>
+        <div>
+          <label for="email" class="block font-medium">Email</label>
+          <input type="email" name="email" id="email" class="form-input w-full rounded-md">
+            @if(flashMessages.has('errors.email'))
+            <p> {{ flashMessages.get('errors.email') }} </p>
+            @endif
+        </div>
+        <div>
+          <label for="password" class="block font-medium">Password</label>
+          {{--  <input type="password" id="password" name="password" class="form-input w-full rounded-md" required>  --}}
+          <input type="password" name="password" id="password" class="form-input w-full rounded-md">
+            @if(flashMessages.has('errors.password'))
+            <p> {{ flashMessages.get('errors.password') }} </p>
+            @endif
+        </div>
+        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md">Register</button>
+      </form>
+    </div>
+  </div>
+
+@endsection

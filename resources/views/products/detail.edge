@@ -1,0 +1,58 @@
+@layout('layouts/main')
+@set('title','Detail Product')
+@section('body')
+  {{ product.name }}
+  {{ store.name }}
+  <div class="container mx-auto py-8">
+    <!-- Komentar -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Komentar Pengguna</h2>
+        <div id="comments-read"></div>
+        <!-- Form Komentar -->
+        <div>
+            <h2 class="text-2xl font-bold mb-4">Tambah Komentar</h2>
+            <form id="myComment">
+              {{ csrfField() }}
+                <div class="mb-4">
+                    <input type="text" name="storeSlug" id="" value="{{ store.slug }}">
+                    <input type="text" name="productSlug" id="" value="{{ product.slug }}">
+                  <input type="text" name="userId" id="" value="{{ auth.user.id }}">
+                  <input type="text" name="productId" id="" value="{{ product.id }}">
+                  <h1 class="font-bold text-left">{{ auth.user.username }}</h1>
+                </div>
+                <div class="mb-4">
+                    <label for="komentar" class="block text-gray-700 font-bold mb-2">Komentar:</label>
+                    <textarea id="komentar" name="comments" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Type your comments"></textarea>
+                </div>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Kirim</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+  function read(){
+    $.get("{{ route('ProductsController.readComment',[product.id]) }}",{},function(data,status){
+        $("#comments-read").html(data);
+    })
+  }
+  $(document).ready(function () {
+    read();
+    $('#myComment').on('submit',function(e){
+        //alert('hello')
+        e.preventDefault();
+        var formData = $('#myComment').serialize()
+        $.ajax({
+            url:"{{ route('ProductsController.comments') }}",
+            data:formData,
+            type:'POST',
+            success:function(res){
+                $('#myComment')[0].reset();
+                read();
+            },
+            statusCode:200
+        })
+    })
+  })
+</script>
+@endsection

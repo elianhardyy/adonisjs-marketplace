@@ -1,0 +1,49 @@
+@layout('layouts/main')
+@set('title','Store')
+@section('body')
+   <!-- Page Content -->
+   <div id="main" class="ml-64 p-6">
+    <!-- Content goes here -->
+    <h1 class="text-2xl font-semibold">Tambah Toko</h1>
+    <p>Isi konten tambah toko di sini.</p>
+    <form class="mt-6" action="{{ route('StoresController.store') }}" method="POST" enctype="multipart/form-data">
+        {{ csrfField() }}
+        <input type="hidden" name="userId" value="{{ auth.user.id }}">
+        <div class="mb-4">
+          <label for="storeName" class="block text-gray-700 font-semibold">Nama Toko</label>
+          <input type="text" id="storeName" name="name" class="mt-1 p-2 w-full border rounded-md">
+        </div>
+        <div class="mb-4">
+          <label for="storeDescription" class="block text-gray-700 font-semibold">Deskripsi Toko</label>
+          <textarea id="storeDescription" name="description" rows="4" class="mt-1 p-2 w-full border rounded-md"></textarea>
+        </div>
+        {{--  <input type="file" name="image" id="" >  --}}
+        <input type="file" id="fileInput" class="hidden" name="image">
+        <label for="fileInput" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md cursor-pointer">
+        <i class="fa-solid fa-upload"></i>
+          Pilih Gambar
+        </label>
+        <span id="fileName" class="ml-2"></span>
+  
+        <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">Tambah Toko</button>
+
+      </form>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    document.getElementById('sidebarToggle').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('hidden');
+    });
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+
+    fileInput.addEventListener('change', function() {
+      if (fileInput.files.length > 0) {
+        fileName.textContent = fileInput.files[0].name;
+      } else {
+        fileName.textContent = '';
+      }
+    });
+  </script>
+@endsection

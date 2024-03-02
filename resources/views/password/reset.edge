@@ -1,0 +1,27 @@
+@layout('layouts/main')
+@set('title','Forgot Password')
+@section('body')
+@if(isValid)
+<div class="bg-gray-100 h-screen flex justify-center items-center">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+        <h2 class="text-xl font-semibold mb-4">Reset Password</h2>
+        <form method="POST" action="{{ route('PasswordResetsController.store') }}">
+            {{ csrfField() }}
+            <input type="hidden" name="tokenp" value="{{ token }}">
+            <div class="mb-4">
+                <label for="password" class="block text-gray-700 font-semibold mb-2">New Password</label>
+                <input type="password" id="password" name="password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500" required>
+            </div>
+            {{--  <div class="mb-4">
+                <label for="confirm-password" class="block text-gray-700 font-semibold mb-2">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500" required>
+            </div>  --}}
+            <button type="submit" class="w-full bg-blue-500 text-white font-semibold px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Reset Password</button>
+        </form>
+    </div>
+</div>
+  
+@else
+  <p>Your token is invalid or expired. <a href="{{ route('PasswordResetsController.forgot') }}">Please try again</a></p>
+@endif
+@endsection

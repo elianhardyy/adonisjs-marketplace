@@ -1,0 +1,15 @@
+@layout('layouts/main')
+@set('title','Edit Page')
+@section('body')
+    <p>{{ category.name }}</p>
+    <img src="http://localhost:3333/{{ category.image }}" alt="" width="50px">
+    <form action="{{ route('CategoriesController.update',[category.id]) }}?_method=PUT" method="post" enctype="multipart/form-data">
+        {{ csrfField() }}
+        <br>
+        <label for="">category name</label>
+        <input type="text" name="name" id="" value="{{ category.name }}">
+        <label for="">category img</label>
+        <input type="file" name="image" id="">
+        <button type="submit">Submit</button>
+    </form>
+@endsection

@@ -1,0 +1,94 @@
+<nav class="bg-gray-800 p-4 fixed top-0 w-full">
+    <div class="flex items-center justify-between">
+      
+      <div class="flex items-center">
+        <div class="text-white mr-4">
+          <span class="font-semibold">Your Logo</span>
+        </div>
+        <div class="hidden md:block">
+          <a href="#" class="text-white mr-4">Home</a>
+          <a href="{{ route('StoresController.index') }}" class="text-white mr-4">Store</a>
+          <div class="relative inline-block">
+            <!-- Dropdown Services -->
+            <a href="#" class="text-white mr-4" id="servicesDropdownBtn">Services <i class="fas fa-chevron-down"></i></a>
+            <div id="servicesDropdown" class="hidden absolute bg-gray-800 text-white p-2 mt-2 rounded-md shadow-md">
+              <a href="#" class="block py-2">Service 1</a>
+              <a href="#" class="block py-2">Service 2</a>
+              <a href="#" class="block py-2">Service 3</a>
+            </div>
+          </div>
+          <a href="#" class="text-white mr-4">Contact</a>
+          <a href="#" class="text-gray-600 hover:text-gray-800 mr-4"><i class="fas fa-search"></i></a>
+          <a href="#" id="cart-nav" class="cart-navi text-gray-600 hover:text-gray-800 mr-4 relative">
+            <i class="fas fa-shopping-cart"></i>
+            <!-- Menambahkan informasi jumlah item di keranjang -->
+              @if(auth.user)
+                @if(carts)
+                  @if(carts.length > 0)
+                    <div class="cart-count absolute top-0 right-0 left-4 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">{{ carts.length }}</div>
+                  @endif
+                @endif
+              @endif
+          </a>
+        </div>
+        <div class="hidden md:block absolute right-4">
+            @if(auth.user)
+                <form action="{{ route('AuthController.logout') }}" method="post">
+                    {{ csrfField() }}
+                    <button class="bg-white p-2 rounded-md font-bold">Logout</button>
+                </form>
+            @else
+                <a href="/register" class="text-white font-bold mr-4">Sign Up</a>
+                <a href="/login" class="bg-white p-2 px-3 rounded-md font-bold">Login</a>
+            @endif
+        </div>
+      </div>
+      <div class="block md:hidden">
+        <a href="#" id="cart-nav" class="cart-navi text-gray-600 hover:text-gray-800 mr-4 relative">
+          <i class="fas fa-shopping-cart"></i>
+          <!-- Menambahkan informasi jumlah item di keranjang -->
+            @if(auth.user)
+              @if(carts)
+                @if(carts.length > 0)
+                  <div class="cart-count absolute top-0 right-0 left-4 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">{{ carts.length }}</div>
+                @endif
+              @endif
+            @endif
+        </a>
+        <button id="menuBtn" class="text-white focus:outline-none">
+          <!-- Font Awesome Icon -->
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden">
+      <a href="#" class="block py-2 px-4 text-white">Home</a>
+      <a href="{{ route('StoresController.index') }}" class="block py-2 px-4 text-white">Store</a>
+      <div class="relative inline-block">
+        <!-- Mobile Dropdown Services -->
+        <a href="#" class="block py-2 px-4 text-white" id="servicesDropdownBtnMobile">Services <i class="fas fa-chevron-down"></i></a>
+        <div id="servicesDropdownMobile" class="hidden bg-gray-800 text-white p-2 mt-2 rounded-md shadow-md">
+          <a href="#" class="block py-2">Service 1</a>
+          <a href="#" class="block py-2">Service 2</a>
+          <a href="#" class="block py-2">Service 3</a>
+        </div>
+      </div>
+      <a href="#" class="block py-2 px-4 text-white">Contact</a> 
+      <a href="#" class="text-white hover:text-gray-300 mr-4"><i class="fas fa-search"></i></a>
+      
+      <hr class="border-gray-600 my-1">
+      @if(auth.user)
+                <form action="{{ route('AuthController.logout') }}" method="post">
+                    {{ csrfField() }}
+                    <button class="text-white font-bold block py-2 px-4">Logout</button>
+                </form>
+            @else
+           
+                <a href="/register" class="block py-2 px-4 text-white font-bold mr-4">Sign Up</a>
+                <div class="p-2"></div>
+                <a href="/login" class="relative py-2 px-4 bg-white ml-3 rounded-md font-bold">Login</a>       
+            @endif
+    </div>
+  </nav>
+
+  {{--  hilangkan absolute  --}}

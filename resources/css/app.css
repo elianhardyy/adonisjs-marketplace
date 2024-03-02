@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+  *{
+    font-family: 'Inria Sans', sans-serif;
+  }
+  .hamburger-line {
+    @apply my-2 block h-[2px] w-[30px] bg-black;
+  }
+  
+  .hamburger-active > span:nth-child(1) {
+    @apply rotate-45;
+  }
+  
+  .hamburger-active > span:nth-child(2) {
+    @apply scale-0;
+  }
+  
+  .hamburger-active > span:nth-child(3) {
+    @apply -rotate-45;
+  }
+
+  .hero{
+    background-image: url('../images/ONGXW30.jpg');
+    height: auto;
+    width: auto;
+  }
+
+  .hero-register{
+    background-image: url('../images/58244.jpg');
+  }
+
+  .tooa::after{
+    content:'';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 5px;
+    background: green;
+    animation: anim 3.2s linear forwards;
+  }
+
+  @keyframes anim{
+    100%{
+      width: 0;
+    }
+  }

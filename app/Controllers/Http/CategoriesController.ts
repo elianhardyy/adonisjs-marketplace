@@ -58,7 +58,7 @@ export default class CategoriesController {
     }
 
     //!! UPDATE CATEGORY
-    public async update({params,request,session,response}:HttpContextContract){
+    public async update({params,request,response}:HttpContextContract){
         
         const id = params.id
         const categorySlug = await Category.findBy('id',id);

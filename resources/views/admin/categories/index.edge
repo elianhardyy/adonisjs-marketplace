@@ -18,16 +18,18 @@
     <table class="min-w-full bg-white shadow-md rounded">
         <thead class="bg-gray-800 text-white">
             <tr>
+                <th class="text-left py-3 px-4 uppercase font-semibold text-sm">No</th>
                 <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Name</th>
                 <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Image</th>
                 <th class="text-left py-3 px-4 uppercase font-semibold text-sm">Actions</th>
             </tr>
         </thead>
         <tbody class="text-gray-700">
+            @set('no',0)
             @each(cat in category)
             <tr>
-                
-                <td class="py-3 px-4">John Doe</td>
+                <td class="py-3 px-4">{{ no+=1 }}</td>
+                <td class="py-3 px-4">{{ cat.name }}</td>
                 <td class="py-3 px-4"><img src="{{ cat.image }}" alt="" width="30px"></td>
                 <td class="py-3 px-4">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" title="Edit">

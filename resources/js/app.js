@@ -45,26 +45,38 @@ document.getElementById('menuBtn').addEventListener('click', function() {
       servicesDropdownBtnMobile.innerHTML = 'Services <i class="fas fa-chevron-down"></i>';
     }
   });
+
+  var cartCounter = document.querySelectorAll(".cart-counter");
+  var cartPrice = document.querySelectorAll(".cart-price");
+  var cartPriceQty = document.querySelectorAll(".cart-price-qty");
+  var qtyClass = document.querySelectorAll(".qtyclass");
+
   const minusBtns = document.querySelectorAll('.minus-btn');
-  minusBtns.forEach(btn => {
+  minusBtns.forEach((btn,index) => {
     btn.addEventListener('click', function() {
       const quantityElem = btn.nextElementSibling;
       let quantity = parseInt(quantityElem.textContent);
       if (quantity > 1) {
         quantity--;
         quantityElem.textContent = quantity;
+        qtyClass[index].value = quantity;
+        const price = cartPrice[index].value;
+        cartPriceQty[index].innerHTML = price*quantity;
       }
     });
   });
 
   // Plus Button Click Event
   const plusBtns = document.querySelectorAll('.plus-btn');
-  plusBtns.forEach(btn => {
+  plusBtns.forEach((btn,index) => {
     btn.addEventListener('click', function() {
       const quantityElem = btn.previousElementSibling;
       let quantity = parseInt(quantityElem.textContent);
       quantity++;
       quantityElem.textContent = quantity;
+      qtyClass[index].value = quantity;
+      const price = cartPrice[index].value;
+      cartPriceQty[index].innerHTML = price*quantity;
     });
   });
 

@@ -47,3 +47,26 @@
       width: 0;
     }
   }
+
+  .pretty-checkbox input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 1rem;
+    height: 1rem;
+    background-color: transparent;
+    border: 2px solid #4A5568;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    outline: none;
+    cursor: pointer;
+}
+.pretty-checkbox input[type="checkbox"]:checked {
+    background-color: #4A5568;
+    border-color: #4A5568;
+}
+/* Styles for the custom checkbox container */
+.pretty-checkbox {
+    display: inline-block;
+    vertical-align: middle;
+}

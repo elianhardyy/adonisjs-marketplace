@@ -1,13 +1,22 @@
 @layout('layouts/main')
 @set('title','Product')
-
 @section('body')
-  <h1>Product</h1>
-  @each(product in products)
-    {{ product.name }}
-    {{ product.category.name }}
-    <a href="{{ route('ProductsController.detail',{slug:product.store.slug, pslug:product.slug}) }}">Detila</a>
-    <img src="http://localhost:3333/{{ product.image }}" alt="">
-  @endeach
-  
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-4">Produk {{ storeName }}</h1>
+    <div class="grid grid-cols-3 md:grid-cols-3 gap-8">
+      @each(product in products)
+        <!-- Produk 1 -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <img src="http://localhost:3333/{{ product.image }}" alt="Produk 1" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
+                <p class="text-gray-600 mb-2">Kategori: {{ product.category.name }}</p>
+                <p class="text-gray-800 mb-2">Harga: Rp {{ product.price }}</p>
+                <p class="text-gray-700">Kuantitas: {{ product.qty }}</p>
+                <a href="{{ route('ProductsController.detail',{slug:product.store.slug, pslug:product.slug}) }}">Detail</a>
+            </div>
+        </div>
+        @endeach
+    </div>
+</div>
 @endsection

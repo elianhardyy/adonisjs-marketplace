@@ -6,15 +6,17 @@ import Product from 'App/Models/Product';
 import Store from 'App/Models/Store';
 import Category from 'App/Models/Category';
 import Comment from 'App/Models/Comment';
+import moment from 'moment';
 
 export default class ProductsController {
     public async index({view,params}:HttpContextContract){
         const slugstore = params.slug
         const store :any= await Store.findBy('slug',slugstore)
         // const storeid = store
+        const storeName = store.name;
         const products = (await Product.query().preload('category').preload('store').where('store_id',store.id))
        
-        return view.render('products.index',{products});
+        return view.render('products.index',{products,storeName});
     }
     public async adminView({view}:HttpContextContract){
         return view.render('admin.products.create')
@@ -99,6 +101,6 @@ export default class ProductsController {
     }
     public async readComment({view,params}:HttpContextContract){
         const comments = await Comment.query().preload('user').preload("product").where('product_id',params.id);
-        return view.render('products.ajax.comments',{comments});
+        return view.render('products.ajax.comments',{comments,moment});
     }
 }

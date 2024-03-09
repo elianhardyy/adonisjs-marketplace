@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Product from './Product'
-import Cart from './Cart'
 import Store from './Store'
 import User from './User'
 
@@ -13,10 +12,10 @@ export default class Order extends BaseModel {
   public status:string
 
   @column()
-  public productId:number
+  public qty:number
 
   @column()
-  public cartId:number
+  public productId:number
 
   @column()
   public storeId:number
@@ -26,9 +25,6 @@ export default class Order extends BaseModel {
 
   @belongsTo(()=>Product)
   public product:BelongsTo<typeof Product>
-
-  @belongsTo(()=>Cart)
-  public cart:BelongsTo<typeof Cart>
 
   @belongsTo(()=>Store)
   public store:BelongsTo<typeof Store>

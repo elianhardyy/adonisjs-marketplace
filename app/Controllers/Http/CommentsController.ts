@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema,rules} from '@ioc:Adonis/Core/Validator';
 import Comment from 'App/Models/Comment';
 export default class CommentsController {
-    public async store({request,response}:HttpContextContract){
+    public async store({request}:HttpContextContract){
         const commentSchema = schema.create({
             userId:schema.number([rules.required()]),
             productId:schema.number([rules.required()]),

@@ -92,7 +92,10 @@ export const csrf: ShieldConfig['csrf'] = {
 	| ```
   |
   */
-  exceptRoutes: [],
+  exceptRoutes:  (ctx) => {
+    // ignore all routes starting with /api/
+    return ctx.request.url().includes('/api/')
+  },
 
   /*
   |--------------------------------------------------------------------------

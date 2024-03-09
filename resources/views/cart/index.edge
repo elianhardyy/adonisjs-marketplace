@@ -5,42 +5,210 @@
   <main class="container mx-auto py-8 px-4">
     <h1 class="text-3xl font-semibold text-gray-800 mb-4">Your Shopping Cart</h1>
     <!-- Cart Items -->
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    @set('number',0)
+    @set('price',0)
+    <div class="pretty-checkbox flex flex-col">
+      <input type="checkbox" name="checkallcarts" id="checkallcarts"/>
+      <p>Select all</p>
+    </div>
+    @each(cart in carts)
+    <div id="cartProduct{{ cart.product.id }}" class="cart-product">
+    <form class="myOrder" id="myOrderid">
+      {{ csrfField() }}
+    <div class="cart-list bg-white shadow-md rounded-lg overflow-hidden">
       <!-- Sample Cart Item -->
-      @set('number',0)
-      @set('price',0)
-      @each(cart in carts)
-      <div class="flex items-center border-b border-gray-200 py-4 px-6">
-        <img src="product1.jpg" alt="Product Image" class="w-16 h-16 object-cover rounded">
+      <div class="flex items-center border-b border-gray-200 py-4 px-6" id="cartItem{{ cart.product.id }}">
+        <img src="http://localhost:3333/{{ cart.product.image }}" alt="Product Image" class="w-16 h-16 object-cover rounded">
         <div class="ml-4 flex-1">
           <h2 class="text-lg font-semibold text-gray-800">{{ cart.product.name }}</h2>
           <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
           <div class="flex items-center justify-between mt-2">
-            <span class="text-gray-800 font-semibold">{{ cart.$extras.cart_groups * cart.product.price }}</span>
+            <input type="hidden" name="" class="cart-price" value="{{cart.product.price}}">
+            <span class="text-gray-800 font-semibold cart-price-qty">{{ cart.$extras.cart_groups * cart.product.price }}</span>
+            <div class="pretty-checkbox">
+              <input type="checkbox" name="checkcartids" id="checkcartids" class="checkcartids rounded" value="{{ cart.product.id }}"/>
+            </div>
+          </form>
+
+          <form class="cart-del" id="cart-del{{cart.product.id}}">
+            <button type="submit" id="myCartList{{ cart.product.id }}" class="delete-cart hover:cursor-pointer">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+          </form>
+          
+            
             <div class="flex items-center space-x-2">
-              <button class="text-gray-600 hover:text-gray-800 focus:outline-none minus-btn"><i class="fas fa-minus"></i></button>
-              <span class="text-gray-800">{{ cart.$extras.cart_groups }}</span>
-              <button class="text-gray-600 hover:text-gray-800 focus:outline-none plus-btn"><i class="fas fa-plus"></i></button>
+              <button type="button" class="text-gray-600 hover:text-gray-800 focus:outline-none minus-btn"><i class="fas fa-minus"></i></button>
+              <span class="cart-counter text-gray-800">{{ cart.$extras.cart_groups }}</span>
+              <button type="button" class="text-gray-600 hover:text-gray-800 focus:outline-none plus-btn"><i class="fas fa-plus"></i></button>
             </div>
           </div>
         </div>
       </div>
-      <script>
-      </script>
       @set('price',cart.$extras.cart_groups * cart.product.price+price)
       @set('number',cart.$extras.cart_groups+number)
-      @endeach
+      <input type="hidden" name="qty[]" value="{{ cart.$extras.cart_groups }}" class="qtyclass" id="qtyItem{{ cart.product.id }}">
+      <input type="hidden" name="user_id[]" value="{{ auth.user.id }}" id="userItem{{ cart.product.id }}">
+      <input type="hidden" name="product_id[]" value="{{ cart.product.id }}">
+      <input type="hidden" name="store_id[]" value="{{ cart.store.id }}" id="storeItem{{ cart.product.id }}">
       <!-- End Sample Cart Item -->
       <!-- Repeat similar structure for other cart items -->
     </div>
-    <!-- End Cart Items -->
-    <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
-      <i class="fas fa-plus mr-2"></i> Tumbas (  {{carts.length}}  )
+  </div>
+  @endeach
+  <!-- End Cart Items -->
+  <button id="cartAllRecords" type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
+    <i class="fas fa-plus mr-2"></i> Tumbas &nbsp; <span class="carts-qty"></span>
     </button>
     <br>
     {{ number }}
     <br>
     {{ price }}
   </main>
- 
+  <script>
+    //checkcartids
+    //checkallcarts
+    //cartAllRecords
+    const cartList = document.querySelector(".cart-list");
+    var cartCounter = document.querySelectorAll(".cart-counter");
+    var cartPrice = document.querySelectorAll(".cart-price");
+    var cartPriceQty = document.querySelectorAll(".cart-price-qty");
+    var qtyClass = document.querySelectorAll(".qtyclass");
+    var minusBtn = document.getElementsByClassName("minus-btn");
+    var plusBtn = document.getElementsByClassName("plus-btn");
+    //console.log(cartCounter[1].textContent);
+    //console.log(cartPrice[0].value)
+    
+    function minusQty(){
+      var count = 0;
+      for(var i=0; i<minusBtn.length; i++){
+        const counter = cartCounter[i]
+        const price = cartPrice[i]
+        const quantity = cartPriceQty[i] 
+        const qtyArr = qtyClass[i]
+        //console.log(quantity.innerHTML);
+        minusBtn[i].addEventListener("click",function(e){
+            //console.log(e.target)
+            e.preventDefault();
+            // var countMin = counter.innerHTML;
+            // countMin--
+            // var priceMin = price.value;
+            // var quantityMin = quantity;
+            // var pq = (countMin+1)*priceMin
+            // qtyArr.value = countMin+1
+            // quantityMin.innerHTML = pq;
+            // console.log(pq);
+            // const curr = Number(qtyArr.value) || 0;
+            // qtyArr.value = curr - 1;
+          })
+        }
+    }
+    function plusQty(){
+      var count = 0;
+      for(var i=0; i<plusBtn.length; i++){
+        const counter = cartCounter[i]
+        const price = cartPrice[i]
+        const quantity = cartPriceQty[i] 
+        const qtyArr = qtyClass[i]
+        //console.log(quantity.innerHTML);
+        plusBtn[i].addEventListener("click",function(e){
+            //console.log(e.target)
+            // e.preventDefault();
+            // var countPlus = counter.innerHTML;
+            // countPlus++
+            // var priceMin = price.value;
+            // var quantityMin = quantity;
+            // var pq = (countPlus-1)*priceMin
+            // qtyArr.value = countPlus-1
+            // quantityMin.innerHTML = pq;
+            // console.log(pq);
+          })
+        }
+    }
+    $(document).ready(function(){
+      
+      $("#checkallcarts").click(function(){
+        $(".checkcartids").prop('checked',$(this).prop('checked'))
+      })
+      var product_carts = [];
+      var product_len = 0;
+      $("input:checkbox[name=checkcartids]:checked").each(function(){
+        product_carts.push($(this).val())
+        var p = product_carts.length;
+        product_len += p;
+        console.log(p)
+      })
+      
+      $("#cartAllRecords").click(function(e){
+        e.preventDefault();
+        var products_ids = [];
+        var qty_ids=[];
+        var stores_ids = [];
+        var user_ids = [];
+        var all_carts = {};
+        $("input:checkbox[name=checkcartids]:checked").each(function(){
+          products_ids.push($(this).val())
+        });
+        $.each(products_ids,function(key,val){
+          var item = $('#qtyItem'+val).val()
+          qty_ids.push(item)
+        })
+        $.each(products_ids,function(key,val){
+          var item = $('#storeItem'+val).val()
+          stores_ids.push(item)
+        })
+        $.each(products_ids,function(key,val){
+          var item = $('#userItem'+val).val()
+          user_ids.push(item)
+        })
+        var csrftoken = document.getElementsByName("_csrf")[0].value;
+        $.ajax({
+          url:"{{ route('OrdersController.store') }}",
+          type:"POST",
+          data:{
+            product_id:products_ids,
+            qty:qty_ids,
+            store_id:stores_ids,
+            user_id:user_ids,
+            _csrf:csrftoken
+          },
+          success:function(response){
+            window.location.href = "/order"
+          },
+          error:function(){
+            // console.log("{{ csrfField() }}")
+            alert('error');
+          }
+          
+        })
+      })
+    })
+  </script>
+  @each(cart in carts)
+  <script>
+    $(document).ready(function(){
+      
+      $("#cart-del{{ cart.product.id }}").submit(function(e){
+          var csrftoken = document.getElementsByName("_csrf")[0].value
+          console.log(e);
+          e.preventDefault();
+          $.ajax({
+            url:"{{ route('CartsController.destroy',[cart.product.id]) }}?_method=DELETE",
+            data:{
+              _csrf:csrftoken
+            },
+            type:"POST",
+            success:function(res){
+              $('#cartProduct{{ cart.product.id }}').remove()
+              console.log(res);
+              $('.cart-navi').append(`<div class="cart-count absolute top-0 right-0 left-4 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">${res.count}</div>`);
+            },
+            error:function(res){
+              console.log(res)
+            }
+          })
+      })
+    })
+  </script>
+  @endeach
 @endsection

@@ -14,10 +14,10 @@
             <form id="myComment">
               {{ csrfField() }}
                 <div class="mb-4">
-                    <input type="text" name="storeSlug" id="" value="{{ store.slug }}">
-                    <input type="text" name="productSlug" id="" value="{{ product.slug }}">
-                  <input type="text" name="userId" id="" value="{{ auth.user.id }}">
-                  <input type="text" name="productId" id="" value="{{ product.id }}">
+                    <input type="hidden" name="storeSlug" id="" value="{{ store.slug }}">
+                    <input type="hidden" name="productSlug" id="" value="{{ product.slug }}">
+                  <input type="hidden" name="userId" id="" value="{{ auth.user.id }}">
+                  <input type="hidden" name="productId" id="" value="{{ product.id }}">
                   <h1 class="font-bold text-left">{{ auth.user.username }}</h1>
                 </div>
                 <div class="mb-4">

@@ -3,6 +3,7 @@
         <div class="mb-4">
             <span class="font-bold">{{ comment.user.username }}</span>
                 <p class="text-gray-700">{{ comment.comments }}</p>
+                <p class="right-0 top-0">{{ moment(comment.created_at).fromNow() }}</p>
         </div>
     </div>
 @endeach

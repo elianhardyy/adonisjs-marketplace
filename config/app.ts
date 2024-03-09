@@ -26,7 +26,8 @@ import type { ValidatorConfig } from '@ioc:Adonis/Core/Validator'
 |
 */
 export const appKey: string = Env.get('APP_KEY')
-
+export const clientKey :string = Env.get('MIDTRANS_CLIENT_KEY')
+export const serverKey : string = Env.get('MIDTRANS_SERVER_KEY')
 /*
 |--------------------------------------------------------------------------
 | Http server configuration

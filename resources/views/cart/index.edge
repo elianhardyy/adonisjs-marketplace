@@ -22,9 +22,9 @@
         <div class="ml-4 flex-1">
           <h2 class="text-lg font-semibold text-gray-800">{{ cart.product.name }}</h2>
           <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <span class="text-gray-800 font-semibold">Rp</span>&nbsp;<span class="text-gray-800 font-semibold cart-price-qty">{{ cart.$extras.cart_groups * cart.product.price }}</span>
+          <input type="hidden" name="" class="cart-price" value="{{cart.product.price}}">
           <div class="flex items-center justify-between mt-2">
-            <input type="hidden" name="" class="cart-price" value="{{cart.product.price}}">
-            <span class="text-gray-800 font-semibold cart-price-qty">{{ cart.$extras.cart_groups * cart.product.price }}</span>
             <div class="pretty-checkbox">
               <input type="checkbox" name="checkcartids" id="checkcartids" class="checkcartids rounded" value="{{ cart.product.id }}"/>
             </div>
@@ -32,7 +32,7 @@
 
           <form class="cart-del" id="cart-del{{cart.product.id}}">
             <button type="submit" id="myCartList{{ cart.product.id }}" class="delete-cart hover:cursor-pointer">
-              <i class="fa-regular fa-trash-can"></i>
+              <i class="fa-regular fa-trash-can text-orange-600"></i>
             </button>
           </form>
           
@@ -59,47 +59,87 @@
   <!-- End Cart Items -->
   <br>
   <button id="cartAllRecords" type="submit" class="text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end" style="background-color:rgb(255, 157, 128);" disabled>
-    <i class="fas fa-plus mr-2"></i> Tumbas &nbsp; <span class="carts-qty"></span>
+    Checkout<span class="carts-qty"></span>
     </button>
     <br>
-    {{ number }}
+    <input type="hidden" name="" value="{{ number }}">
     <br>
-    {{ price }}
+    <span class="total-price text-orange-600 font-bold text-2xl">Rp &nbsp;</span><span id="total-price" class="total-price text-orange-600 font-bold text-2xl">{{ price }}</span>
   </main>
   <script>
-    //checkcartids
-    //checkallcarts
-    //cartAllRecords
     const cartList = document.querySelector(".cart-list");
     $(document).ready(function(){
+      var qtyCount = document.querySelectorAll(".qtyclass")
+      var price = document.querySelectorAll(".cart-price");
+      var checkId = document.querySelectorAll(".checkcartids");
       //var check = $("input:checkbox[name=checkcartids]:checked").length;
-      
+      var priceCart = 0
+      document.getElementById("total-price").innerHTML = priceCart.toLocaleString("id");
       $("#checkallcarts").click(function(){
         $(".checkcartids").prop('checked',$(this).prop('checked'))
+        var totalRes = 0
+        checkId.forEach((v,i)=>{
+          if(checkId[i].checked){
+            const qty = qtyCount[i];
+             const qtyVal = qty.value
+  
+             const priceElement = price[i]
+             const priceVal = priceElement.value
+             //console.log(priceVal)
+             const hitung = qtyVal * priceVal
+             totalRes += hitung
+          }
+        })
+        document.getElementById("total-price").innerHTML = totalRes.toLocaleString("id");
         var check = $("input:checkbox[name=checkcartids]:checked").length;
-        $(".carts-qty").html(`(${check})`)
+        $(".carts-qty").html(`&nbsp;(${check})`)
         if(check>0){
           document.getElementById("cartAllRecords").disabled = false;
         //document.getElementById("cartAllRecords").classList.toggle("")
+
         document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
       }else{
           document.getElementById("cartAllRecords").disabled = true;
-
           document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
+          $(".carts-qty").html(``)
         }
       })
       var cartLen = $(".cart-product").length
       $(".checkcartids").click(function(){
+        var checkids = $("input:checkbox[name=checkcartids]:checked")
         var check = $("input:checkbox[name=checkcartids]:checked").length;
-        $(".carts-qty").html(`(${check})`)
-        if(check>0){
-          document.getElementById("cartAllRecords").disabled = false;
-        //document.getElementById("cartAllRecords").classList.toggle("")
-        document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
-      }else{
-          document.getElementById("cartAllRecords").disabled = true;
+        $(".carts-qty").html(`&nbsp;(${check})`)
+        var totalRes = 0
+        checkId.forEach((v,i)=>{
+          if(checkId[i].checked){
+            const qty = qtyCount[i];
+             const qtyVal = qty.value
+  
+             const priceElement = price[i]
+             const priceVal = priceElement.value
+             const hitung = qtyVal * priceVal
+             totalRes += hitung
+          }
+        })
+        //console.log(totalRes);
+        document.getElementById("total-price").innerHTML = totalRes.toLocaleString("id");
 
+        if(check==cartLen){
+          document.getElementById("checkallcarts").checked=true;
+        }
+        if(check<cartLen){
+          document.getElementById("checkallcarts").checked=false;
+
+        }
+        if(check>0){
+        document.getElementById("cartAllRecords").disabled = false;
+        //document.getElementById("cartAllRecords").classList.toggle("")
+        
+        document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
+        }else{
+          document.getElementById("cartAllRecords").disabled = true;
           document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
+          $(".carts-qty").html(``)
         }
       
       })

@@ -30,7 +30,10 @@ export default class OrdersController {
                 
             }
             await Order.createMany(coba)
-        return response.redirect("/order")
+        //return response.redirect("/order")
+        return response.json({
+            msg:"success"
+        })
         // Create Snap API instance
         
     }
@@ -42,12 +45,11 @@ export default class OrdersController {
             serverKey : Config.get('midtrans.serverKey')
         });
         const userId:any = auth.user?.id
-        
-        const order = await Order.query().preload("product").preload("user").where("user_id",userId);
-        const ordersingle = await Order.query().preload("product").preload("user").where("user_id",userId).first();
+        const order = await Order.query().preload("product").preload("user").where("user_id",userId).where("status","not");
+        const ordersingle = await Order.query().preload("product").preload("user").where("user_id",userId).where("status","not").first();
         let price = 0;
         order.map(o=>{
-            price += o.product.price
+            price += o.product.price * o.qty
         });
         console.log(price);
         var uuid = ordersingle?.id;
@@ -80,7 +82,15 @@ export default class OrdersController {
                 await Order.query().where('user_id',userId).update({status:"paid"});
                 const orderProduct = await Order.query().where("user_id",userId).where('status','paid');
                 orderProduct.map(async (op)=>{
-                    await Cart.query().where('user_id',userId).where('product_id',op.productId).delete();
+                    const orderqty = op.qty;
+                    const cartsProductUser = await Cart.query().where('user_id',userId).where('product_id',op.productId);
+                    if(orderqty >= cartsProductUser.length){
+                        await Cart.query().where('user_id',userId).where('product_id',op.productId).delete()
+                    }else{
+                        for (let i = 0; i < orderqty; i++) {
+                            cartsProductUser[i].delete();
+                        }
+                    }
                 });
                 return response.json({msg:"heheh"})
             }

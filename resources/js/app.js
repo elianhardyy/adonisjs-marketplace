@@ -1,7 +1,6 @@
 // app entrypoint
 import '../css/app.css'
 import './script'
-console.log("kenek")
 // const hamburger = document.querySelector("#hamburger")
 //         const navMenu = document.querySelector("#nav-menu");
 //         hamburger.addEventListener('click', function () {
@@ -46,11 +45,19 @@ document.getElementById('menuBtn').addEventListener('click', function() {
     }
   });
 
-  var cartCounter = document.querySelectorAll(".cart-counter");
+  var totalPrice = document.getElementById("total-price");
   var cartPrice = document.querySelectorAll(".cart-price");
   var cartPriceQty = document.querySelectorAll(".cart-price-qty");
   var qtyClass = document.querySelectorAll(".qtyclass");
+  var checkIds = document.querySelectorAll(".checkcartids");
 
+    cartPriceQty.forEach((v,i)=>{
+      const priceQty = parseInt(v.innerHTML).toLocaleString("id");
+      cartPriceQty[i].innerHTML = priceQty;
+    })
+ 
+
+  var orderPrice = parseInt(totalPrice.innerHTML);
   const minusBtns = document.querySelectorAll('.minus-btn');
   minusBtns.forEach((btn,index) => {
     btn.addEventListener('click', function() {
@@ -61,11 +68,15 @@ document.getElementById('menuBtn').addEventListener('click', function() {
         quantityElem.textContent = quantity;
         qtyClass[index].value = quantity;
         const price = cartPrice[index].value;
+        const priceQty = (price*quantity).toLocaleString("id");
         cartPriceQty[index].innerHTML = price*quantity;
+        hasil();
+        cartPriceQty[index].innerHTML = priceQty;
+      
       }
     });
   });
-
+  
   // Plus Button Click Event
   const plusBtns = document.querySelectorAll('.plus-btn');
   plusBtns.forEach((btn,index) => {
@@ -76,6 +87,20 @@ document.getElementById('menuBtn').addEventListener('click', function() {
       quantityElem.textContent = quantity;
       qtyClass[index].value = quantity;
       const price = cartPrice[index].value;
+      const priceQty = (price*quantity).toLocaleString("id");
       cartPriceQty[index].innerHTML = price*quantity;
+      hasil();
+      cartPriceQty[index].innerHTML = priceQty;
     });
   });
+  function hasil(){
+    var oalah = 0;
+    cartPrice.forEach((v,i)=>{
+      if(checkIds[i].checked){
+        oalah = oalah + parseInt(v.value*qtyClass[i].value)
+      }
+    })
+    var hee = oalah.toLocaleString('id');
+    document.getElementById("total-price").innerHTML = hee;
+    
+  }

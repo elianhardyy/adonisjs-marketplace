@@ -62,7 +62,8 @@
                   @if(auth.user)
                   <input type="hidden" name="userId" id="" value="{{ auth.user.id }}">
                   @endif
-                  <button type="submit" class="btn-sub{{ product.id }} bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full add-to-cart-btn">Add to Cart</button>
+                  <button type="submit" class="btn-sub{{ product.id }} bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-full add-to-cart-btn">Checkout</button>
+                  <button type="submit" class="btn-sub{{ product.id }} bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full add-to-cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
                 </form>
               </div>
             </div>

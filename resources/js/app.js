@@ -79,30 +79,3 @@ document.getElementById('menuBtn').addEventListener('click', function() {
       cartPriceQty[index].innerHTML = price*quantity;
     });
   });
-
-
-  // const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
-  //     addToCartBtns.forEach(btn => {
-  //       btn.addEventListener('click', function() {
-  //         // Get product details
-  //         const productCard = btn.closest('.bg-white');
-  //         const productImage = productCard.querySelector('img').src;
-  //         const productTitle = productCard.querySelector('h3').textContent;
-  //         const productPrice = productCard.querySelector('.text-gray-800').textContent;
-          
-  //         // Create cart item element
-  //         const cartItem = document.createElement('div');
-  //         cartItem.classList.add('flex', 'items-center', 'border-b', 'border-gray-200', 'py-4', 'px-6');
-  //         cartItem.innerHTML = `
-  //           <img src="${productImage}" alt="Product Image" class="w-16 h-16 object-cover rounded">
-  //           <div class="ml-4 flex-1">
-  //             <h2 class="text-lg font-semibold text-gray-800">${productTitle}</h2>
-  //             <p class="text-gray-600">${productPrice}</p>
-  //           </div>
-  //         `;
-
-  //         // Append cart item to cart list
-  //         const cartList = document.querySelector('.cart-list');
-  //         cartList.appendChild(cartItem);
-  //       });
-  //     });

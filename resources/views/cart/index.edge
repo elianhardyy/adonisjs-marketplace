@@ -57,7 +57,8 @@
   </div>
   @endeach
   <!-- End Cart Items -->
-  <button id="cartAllRecords" type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
+  <br>
+  <button id="cartAllRecords" type="submit" class="text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end" style="background-color:rgb(255, 157, 128);" disabled>
     <i class="fas fa-plus mr-2"></i> Tumbas &nbsp; <span class="carts-qty"></span>
     </button>
     <br>
@@ -70,75 +71,38 @@
     //checkallcarts
     //cartAllRecords
     const cartList = document.querySelector(".cart-list");
-    var cartCounter = document.querySelectorAll(".cart-counter");
-    var cartPrice = document.querySelectorAll(".cart-price");
-    var cartPriceQty = document.querySelectorAll(".cart-price-qty");
-    var qtyClass = document.querySelectorAll(".qtyclass");
-    var minusBtn = document.getElementsByClassName("minus-btn");
-    var plusBtn = document.getElementsByClassName("plus-btn");
-    //console.log(cartCounter[1].textContent);
-    //console.log(cartPrice[0].value)
-    
-    function minusQty(){
-      var count = 0;
-      for(var i=0; i<minusBtn.length; i++){
-        const counter = cartCounter[i]
-        const price = cartPrice[i]
-        const quantity = cartPriceQty[i] 
-        const qtyArr = qtyClass[i]
-        //console.log(quantity.innerHTML);
-        minusBtn[i].addEventListener("click",function(e){
-            //console.log(e.target)
-            e.preventDefault();
-            // var countMin = counter.innerHTML;
-            // countMin--
-            // var priceMin = price.value;
-            // var quantityMin = quantity;
-            // var pq = (countMin+1)*priceMin
-            // qtyArr.value = countMin+1
-            // quantityMin.innerHTML = pq;
-            // console.log(pq);
-            // const curr = Number(qtyArr.value) || 0;
-            // qtyArr.value = curr - 1;
-          })
-        }
-    }
-    function plusQty(){
-      var count = 0;
-      for(var i=0; i<plusBtn.length; i++){
-        const counter = cartCounter[i]
-        const price = cartPrice[i]
-        const quantity = cartPriceQty[i] 
-        const qtyArr = qtyClass[i]
-        //console.log(quantity.innerHTML);
-        plusBtn[i].addEventListener("click",function(e){
-            //console.log(e.target)
-            // e.preventDefault();
-            // var countPlus = counter.innerHTML;
-            // countPlus++
-            // var priceMin = price.value;
-            // var quantityMin = quantity;
-            // var pq = (countPlus-1)*priceMin
-            // qtyArr.value = countPlus-1
-            // quantityMin.innerHTML = pq;
-            // console.log(pq);
-          })
-        }
-    }
     $(document).ready(function(){
+      //var check = $("input:checkbox[name=checkcartids]:checked").length;
       
       $("#checkallcarts").click(function(){
         $(".checkcartids").prop('checked',$(this).prop('checked'))
+        var check = $("input:checkbox[name=checkcartids]:checked").length;
+        $(".carts-qty").html(`(${check})`)
+        if(check>0){
+          document.getElementById("cartAllRecords").disabled = false;
+        //document.getElementById("cartAllRecords").classList.toggle("")
+        document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
+      }else{
+          document.getElementById("cartAllRecords").disabled = true;
+
+          document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
+        }
       })
-      var product_carts = [];
-      var product_len = 0;
-      $("input:checkbox[name=checkcartids]:checked").each(function(){
-        product_carts.push($(this).val())
-        var p = product_carts.length;
-        product_len += p;
-        console.log(p)
-      })
+      var cartLen = $(".cart-product").length
+      $(".checkcartids").click(function(){
+        var check = $("input:checkbox[name=checkcartids]:checked").length;
+        $(".carts-qty").html(`(${check})`)
+        if(check>0){
+          document.getElementById("cartAllRecords").disabled = false;
+        //document.getElementById("cartAllRecords").classList.toggle("")
+        document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
+      }else{
+          document.getElementById("cartAllRecords").disabled = true;
+
+          document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
+        }
       
+      })
       $("#cartAllRecords").click(function(e){
         e.preventDefault();
         var products_ids = [];
@@ -177,7 +141,7 @@
           },
           error:function(){
             // console.log("{{ csrfField() }}")
-            alert('error');
+            alert('harap dicentang dulu');
           }
           
         })

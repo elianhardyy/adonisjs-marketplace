@@ -11,7 +11,7 @@
             <div class="p-4">
                 <h2 class="text-xl font-semibold mb-2">{{ product.name }}</h2>
                 <p class="text-gray-600 mb-2">Kategori: {{ product.category.name }}</p>
-                <p class="text-gray-800 mb-2">Harga: Rp {{ product.price }}</p>
+                <span>Rp&nbsp;</span><span class="text-gray-800 mb-2 product-price">{{ product.price }}</span>
                 <p class="text-gray-700">Kuantitas: {{ product.qty }}</p>
                 <a href="{{ route('ProductsController.detail',{slug:product.store.slug, pslug:product.slug}) }}">Detail</a>
             </div>
@@ -19,4 +19,11 @@
         @endeach
     </div>
 </div>
+<script>
+  var productPrice = document.querySelectorAll(".product-price");
+  productPrice.forEach((v,i)=>{
+      const prodPrice = parseInt(v.innerHTML).toLocaleString("id");
+      productPrice[i].innerHTML = prodPrice
+  })
+</script>
 @endsection

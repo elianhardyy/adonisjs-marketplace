@@ -50,6 +50,8 @@ document.getElementById('menuBtn').addEventListener('click', function() {
   var cartPriceQty = document.querySelectorAll(".cart-price-qty");
   var qtyClass = document.querySelectorAll(".qtyclass");
   var checkIds = document.querySelectorAll(".checkcartids");
+  var deleteCart = document.querySelectorAll(".delete-cart");
+  var cartDel = document.querySelectorAll(".cart-del")
 
     cartPriceQty.forEach((v,i)=>{
       const priceQty = parseInt(v.innerHTML).toLocaleString("id");
@@ -59,6 +61,9 @@ document.getElementById('menuBtn').addEventListener('click', function() {
 
   var orderPrice = parseInt(totalPrice.innerHTML);
   const minusBtns = document.querySelectorAll('.minus-btn');
+
+ 
+
   minusBtns.forEach((btn,index) => {
     btn.addEventListener('click', function() {
       const quantityElem = btn.nextElementSibling;

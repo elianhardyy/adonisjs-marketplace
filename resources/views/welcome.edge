@@ -10,7 +10,7 @@
             @if(auth.user.isAdmin)
               Hello {{ auth.user.email }} Admin
             @else
-            {{ auth.user.username.charAt(0).toUpperCase() + auth.user.username.slice(1) }} 
+            {{ auth.user.username }} 
           @endif
         @endif  
           to Our Marketplace</h1>
@@ -88,30 +88,9 @@
   </div>
   @each(product in products)
   <script>
-    function loadCart(){
-            $.get("{{ route('CartsController.length') }}",{},function(response){
-              console.log(response)
-                $('.cart-count').html(response.count)
-            })
-        }
     $(document).ready(function(){
-      // $('.myCart').each(function(i,v){
-      //     $('.myCart').on('submit',function(e){
-      //       e.preventDefault();
-      //       alert(v)
-      //     })
-      // })
-      // $('#myCart').on('submit',function(e){
-      //   e.preventDefault();
-      //   var formData = $('#myCart').serialize();
-      //   $.ajax({
-      //     url:"{{ route('CartsController.store') }}",
-      //     data:formData,
-      //     type:'POST',
-          
-      //   })
-      // })
-      // loadCart();
+      // .charAt(0).toUpperCase() + auth.user.username.slice(1)
+     
       $("#myCart{{ product.id }}").on('submit',function(e){
         e.preventDefault();
         var formData = $('#myCart{{ product.id }}').serialize();

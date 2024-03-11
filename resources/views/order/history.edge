@@ -1,0 +1,55 @@
+@layout('layouts/main')
+@set('title','Checkout')
+@section('body')
+<div class="container mx-auto">
+    <div class="flex justify-center my-8">
+      <div class="w-full sm:w-3/4 lg:w-1/2">
+        <ul class="flex border-b">
+          <li class="mr-1">
+            <a class="tablink py-2 px-4 block text-blue-500 border-b-2 border-blue-500">All</a>
+          </li>
+          <li class="mr-1">
+            <a class="tablink py-2 px-4 block text-gray-500 hover:text-blue-500 hover:border-blue-500">Pending</a>
+          </li>
+          <li class="mr-1">
+            <a class="tablink py-2 px-4 block text-gray-500 hover:text-blue-500 hover:border-blue-500">Paid</a>
+          </li>
+          <li class="mr-1">
+            <a class="tablink py-2 px-4 block text-gray-500 hover:text-blue-500 hover:border-blue-500">Cancel</a>
+          </li>
+        </ul>
+        <div class="mt-4">
+          <!-- Konten dari setiap tab akan ditempatkan di sini -->
+          <!-- Contoh: -->
+          <div class="all-tab tab-content">
+            <p>Konten untuk tab "All" akan ditampilkan di sini.</p>
+          </div>
+          <div class="pending-tab tab-content hidden">
+            <p>Konten untuk tab "Pending" akan ditampilkan di sini.</p>
+          </div>
+          <div class="paid-tab tab-content hidden">
+            <p>Konten untuk tab "Paid" akan ditampilkan di sini.</p>
+          </div>
+          <div class="cancel-tab tab-content hidden">
+            <p>Konten untuk tab "Cancel" akan ditampilkan di sini.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $(".tablink").click(function(){
+        $(".tablink").removeClass("active");
+        $(this).addClass("active");
+  
+        $(".tab-content").removeClass("active");
+        var tabId = $(this).attr("href");
+        $(tabId).addClass("active");
+        
+        return false;
+      });
+    });
+  </script>
+
+@endsection

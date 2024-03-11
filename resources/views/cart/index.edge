@@ -7,41 +7,39 @@
     <!-- Cart Items -->
     @set('number',0)
     @set('price',0)
-    <div class="pretty-checkbox flex flex-col">
-      <input type="checkbox" name="checkallcarts" id="checkallcarts"/>
-      <p>Select all</p>
-    </div>
+    
     @each(cart in carts)
-    <div id="cartProduct{{ cart.product.id }}" class="cart-product">
+    <div id="cartProduct{{ cart.product.id }}" class="cart-product p-5">
     <form class="myOrder" id="myOrderid">
       {{ csrfField() }}
-    <div class="cart-list bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="cart-list bg-white shadow-md rounded-lg overflow-hidden border-t-2">
       <!-- Sample Cart Item -->
       <div class="flex items-center border-b border-gray-200 py-4 px-6" id="cartItem{{ cart.product.id }}">
         <img src="http://localhost:3333/{{ cart.product.image }}" alt="Product Image" class="w-16 h-16 object-cover rounded">
         <div class="ml-4 flex-1">
           <h2 class="text-lg font-semibold text-gray-800">{{ cart.product.name }}</h2>
+          <h2 class="text-base font-normal text-gray-500">{{ cart.product.category.name }}</h2>
           <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
           <span class="text-gray-800 font-semibold">Rp</span>&nbsp;<span class="text-gray-800 font-semibold cart-price-qty">{{ cart.$extras.cart_groups * cart.product.price }}</span>
           <input type="hidden" name="" class="cart-price" value="{{cart.product.price}}">
           <div class="flex items-center justify-between mt-2">
-            <div class="pretty-checkbox">
-              <input type="checkbox" name="checkcartids" id="checkcartids" class="checkcartids rounded" value="{{ cart.product.id }}"/>
-            </div>
-          </form>
+              <div class="pretty-checkbox">
+                <input type="checkbox" name="checkcartids" id="checkcartids{{ cart.product.id }}" class="checkcartids rounded" value="{{ cart.product.id }}"/>
+              </div>
+            </form>
 
-          <form class="cart-del" id="cart-del{{cart.product.id}}">
-            <button type="submit" id="myCartList{{ cart.product.id }}" class="delete-cart hover:cursor-pointer">
-              <i class="fa-regular fa-trash-can text-orange-600"></i>
-            </button>
-          </form>
-          
+            <form class="cart-del" id="cart-del{{cart.product.id}}">
+              <button type="submit" id="myCartList{{ cart.product.id }}" class="delete-cart hover:cursor-pointer">
+                <i class="fa-regular fa-trash-can text-orange-600"></i>
+              </button>
+            </form>
             
-            <div class="flex items-center space-x-2">
-              <button type="button" class="text-gray-600 hover:text-gray-800 focus:outline-none minus-btn"><i class="fas fa-minus"></i></button>
-              <span class="cart-counter text-gray-800">{{ cart.$extras.cart_groups }}</span>
-              <button type="button" class="text-gray-600 hover:text-gray-800 focus:outline-none plus-btn"><i class="fas fa-plus"></i></button>
-            </div>
+              
+              <div class="flex items-center space-x-2">
+                <button type="button" class="text-gray-600 hover:text-gray-800 focus:outline-none minus-btn"><i class="fas fa-minus"></i></button>
+                <span class="cart-counter text-gray-800">{{ cart.$extras.cart_groups }}</span>
+                <button type="button" class="text-gray-600 hover:text-gray-800 focus:outline-none plus-btn"><i class="fas fa-plus"></i></button>
+              </div>
           </div>
         </div>
       </div>
@@ -57,7 +55,10 @@
   </div>
   @endeach
   <!-- End Cart Items -->
-  <br>
+  <div class="pretty-checkbox flex py-2 px-4">
+    <input type="checkbox" name="checkallcarts" id="checkallcarts"/>
+    <span>Select all</span>
+  </div>
   <button id="cartAllRecords" type="submit" class="text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end" style="background-color:rgb(255, 157, 128);" disabled>
     Checkout<span class="carts-qty"></span>
     </button>
@@ -203,9 +204,46 @@
             },
             type:"POST",
             success:function(res){
+              document.getElementById("checkcartids{{ cart.product.id }}").checked = false
               $('#cartProduct{{ cart.product.id }}').remove()
-              console.log(res);
               $('.cart-navi').append(`<div class="cart-count absolute top-0 right-0 left-4 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">${res.count}</div>`);
+              var qtyCount = document.querySelectorAll(".qtyclass")
+              var price = document.querySelectorAll(".cart-price");
+              var checkId = document.querySelectorAll(".checkcartids");
+              var cartLen = $(".cart-product").length
+              var check = $("input:checkbox[name=checkcartids]:checked").length;
+              $(".carts-qty").html(`&nbsp;(${check})`)
+
+              var totalRes = 0
+              checkId.forEach((v,i)=>{
+                if(checkId[i].checked){
+                  const qty = qtyCount[i];
+                  const qtyVal = qty.value
+                  const priceElement = price[i]
+                  const priceVal = priceElement.value
+                  const hitung = qtyVal * priceVal
+                  totalRes += hitung
+                }
+              })
+              //console.log(totalRes);
+              document.getElementById("total-price").innerHTML = totalRes.toLocaleString("id");
+              if(check==cartLen){
+                  document.getElementById("checkallcarts").checked=true;
+                }
+                if(check<cartLen){
+                  document.getElementById("checkallcarts").checked=false;
+
+                }
+                if(check>0){
+                document.getElementById("cartAllRecords").disabled = false;
+                //document.getElementById("cartAllRecords").classList.toggle("")
+                
+                document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
+                }else{
+                  document.getElementById("cartAllRecords").disabled = true;
+                  document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
+                  $(".carts-qty").html(``)
+                }
             },
             error:function(res){
               console.log(res)
@@ -213,6 +251,7 @@
           })
       })
     })
+
   </script>
   @endeach
 @endsection

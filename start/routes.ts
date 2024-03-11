@@ -42,9 +42,9 @@ Route.group(()=>{
   Route.get('/store/:slug/product/:pslug','ProductsController.detail').prefix('dashboard');
   Route.get('/read/:id','ProductsController.readComment');
   Route.get('/order','OrdersController.index');
-  // Route.get("/order",async({view})=>{
-  //   return view.render('order.checkout');
-  // })
+  Route.get("/order/history",async({view})=>{
+    return view.render('order.history');
+  })
 
   Route.post('/store','StoresController.store')
   Route.post('/product/create','ProductsController.store')
@@ -54,6 +54,8 @@ Route.group(()=>{
 
   Route.delete("/cart/delete/:id",'CartsController.destroy')
 }).middleware(['auth','role:user'])
+
+
 Route.post('/api/midtrans-callback','OrdersController.callback');
 import Config from '@ioc:Adonis/Core/Config'
 import crypto from 'crypto';

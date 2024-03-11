@@ -5,7 +5,7 @@ export default class CartsController {
     public async index({view,auth}:HttpContextContract){
         const userId:any = auth.user?.id
         //SELECT `product_id`,`user_id`, COUNT(`product_id`) AS `cart_groups` FROM `carts` WHERE `user_id`=2 GROUP BY `product_id`
-        const carts = await Cart.query().select('store_id','product_id','user_id').count('product_id as cart_groups').preload("store").preload('user').preload('product').where('user_id',userId).groupBy('product_id').groupBy('store_id');
+        const carts = await Cart.query().select('store_id','product_id','user_id').count('product_id as cart_groups').preload("store").preload('user').preload('product',(category)=>{category.preload('category')}).where('user_id',userId).groupBy('product_id').groupBy('store_id');
         //const carte = Cart.$addColumn('cart_groups',{columnName:'cart_groups'})
         return view.render('cart.index',{carts});
     }

@@ -55,18 +55,37 @@
     width: 1rem;
     height: 1rem;
     background-color: transparent;
-    border: 2px solid #4A5568;
+    border: 2px solid #04b725;
     border-radius: 0.25rem;
     transition: all 0.2s;
     outline: none;
     cursor: pointer;
 }
 .pretty-checkbox input[type="checkbox"]:checked {
-    background-color: #4A5568;
-    border-color: #4A5568;
+    background-color: #04b725;
+    border-color: #04b725;
 }
 /* Styles for the custom checkbox container */
 .pretty-checkbox {
     display: inline-block;
     vertical-align: middle;
 }
+
+
+
+  /* Styling untuk tab aktif */
+  .tablink.active {
+    border-color: #2563EB;
+    color: #2563EB;
+  }
+
+  /* Styling untuk konten tab */
+  .tab-content {
+    display: none;
+  }
+
+  /* Styling untuk konten tab aktif */
+  .tab-content.active {
+    display: block;
+  }
+

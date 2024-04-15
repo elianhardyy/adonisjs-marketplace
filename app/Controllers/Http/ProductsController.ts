@@ -7,7 +7,6 @@ import Store from 'App/Models/Store';
 import Category from 'App/Models/Category';
 import Comment from 'App/Models/Comment';
 import moment from 'moment';
-import Database from '@ioc:Adonis/Lucid/Database';
 import fs from "fs"
 
 export default class ProductsController {

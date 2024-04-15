@@ -1,7 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import {schema,rules} from '@ioc:Adonis/Core/Validator'
 import Cart from 'App/Models/Cart';
-import Store from 'App/Models/Store';
 export default class CartsController {
     public async index({view,auth}:HttpContextContract){
         const userId:any = auth.user?.id

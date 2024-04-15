@@ -16,7 +16,8 @@ export default class Store extends BaseModel {
   @column()
   @slugify({
     strategy:'dbIncrement',
-    fields:['name']
+    fields:['name'],
+    allowUpdates:true
   })
   public slug:string
 
@@ -32,13 +33,13 @@ export default class Store extends BaseModel {
   @belongsTo(()=>User)
   public user:BelongsTo<typeof User>
 
-  @hasMany(()=>Product,{foreignKey:'store_id'})
+  @hasMany(()=>Product)
   public product:HasMany<typeof Product>
   
-  @hasMany(()=>Order,{foreignKey:'store_id'})
+  @hasMany(()=>Order)
   public order:HasMany<typeof Order>
 
-  @hasMany(()=>Cart,{foreignKey:'store_id'})
+  @hasMany(()=>Cart)
   public cart:HasMany<typeof Cart>
 
   @column.dateTime({ autoCreate: true })

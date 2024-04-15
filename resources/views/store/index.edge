@@ -7,29 +7,29 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <!-- Store Card -->
       @each(stor in store)
+      <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
+        <div>
+          @if(stor.image === null)
+          <img src="{{ asset('assets/images/2557.jpg') }}" alt="Store Image" class="mb-4">
+          @else
+          <img src="http://localhost:3333/{{ stor.image }}" alt="" class="mb-4">
+          @endif
+          <h2 class="text-lg font-semibold mb-2">{{ stor.name }}</h2>
+          <p class="text-gray-600 mb-4">{{ stor.description }}</p>
+        </div>
+        
+        <a href="{{ route('ProductsController.index',{slug:stor.slug}) }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
+          <i class="fas fa-plus mr-2"></i> Detail Produk
+        </a>
+        
         @if(stor.userId === auth.user.id)
-          <div class="bg-white p-6 rounded-lg shadow-md flex flex-col justify-between">
-            <div>
-              @if(stor.image === null)
-                <img src="{{ asset('assets/images/2557.jpg') }}" alt="Store Image" class="mb-4">
-              @else
-                <img src="http://localhost:3333/{{ stor.image }}" alt="" class="mb-4">
-              @endif
-              <h2 class="text-lg font-semibold mb-2">{{ stor.name }}</h2>
-              <p class="text-gray-600 mb-4">{{ stor.description }}</p>
-            </div>
-            
-              <a href="{{ route('ProductsController.index',{slug:stor.slug}) }}" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
-                <i class="fas fa-plus mr-2"></i> Detail Produk
-              </a>
-            
             <form action="{{ route('ProductsController.create',{slug:stor.slug}) }}" method="get">
               <button class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md inline-flex items-center mb-4 self-end">
                 <i class="fas fa-plus mr-2"></i> Tambah Produk
               </button>
             </form>
+            @endif
           </div>
-       @endif
       @endeach
       
       <!-- Add more store cards as needed -->

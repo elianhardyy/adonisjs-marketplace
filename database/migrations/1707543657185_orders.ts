@@ -8,6 +8,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary()
       table.enum('status',['not','pending','paid','canceled']).defaultTo('not')
       table.integer('qty')
+      table.string('token');
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('cascade').onUpdate('cascade')
       table.integer('product_id').unsigned().references('id').inTable('products').onDelete('cascade').onUpdate('cascade')
       table.integer('store_id').unsigned().references('id').inTable('stores').onDelete('cascade').onUpdate('cascade')

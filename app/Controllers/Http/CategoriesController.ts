@@ -65,13 +65,14 @@ export default class CategoriesController {
         
         const category = schema.create({
             name:schema.string({trim:true,escape:true},[rules.trim(),rules.required(),rules.escape()]),
-            image:schema.file({size:'2mb',extnames:['jpg','png','jpeg']})
+            //image:schema.file({size:'2mb',extnames:['jpg','png','jpeg']})
         });
         const data = await request.validate({schema:category})
         //console.log(data)
         const oldFile = categorySlug?.image;
+        const imgFile = request.file('image',{size:"2mb",extnames:['jpg','png','jpeg']})
         const date = new Date();
-        const ext = data.image.extname;
+        const ext = imgFile?.extname;
         //set filename for date
         var month = date.getMonth();
         var monthexc = month < 10 ? '0' + (month+1) : month + 1; 
@@ -92,8 +93,8 @@ export default class CategoriesController {
         //save in tmp 
         const fullFile = `${foldername}/${filename}`;
         let imageFile : string | undefined;
-        if(data.image){
-            await data.image.move(Application.tmpPath(foldername),{name:filename})
+        if(imgFile){
+            await imgFile.move(Application.tmpPath(foldername),{name:filename})
             imageFile = fullFile
             try {
                 fs.unlinkSync(`./tmp/${oldFile}`)

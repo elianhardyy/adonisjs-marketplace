@@ -14,12 +14,14 @@
       {{ csrfField() }}
     <div class="cart-list bg-white shadow-md rounded-lg overflow-hidden border-t-2">
       <!-- Sample Cart Item -->
+      <img src="http://localhost:3333/{{ cart.store.image }}" width="50px" alt="" class="inline-block">
+      <h2 class="text-2xl font-bold text-gray-800 ml-5 inline-block">{{ cart.store.name }}</h2>
       <div class="flex items-center border-b border-gray-200 py-4 px-6" id="cartItem{{ cart.product.id }}">
         <img src="http://localhost:3333/{{ cart.product.image }}" alt="Product Image" class="w-16 h-16 object-cover rounded">
         <div class="ml-4 flex-1">
           <h2 class="text-lg font-semibold text-gray-800">{{ cart.product.name }}</h2>
           <h2 class="text-base font-normal text-gray-500">{{ cart.product.category.name }}</h2>
-          <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <p class="text-gray-600">{{cart.product.description}}</p>
           <span class="text-gray-800 font-semibold">Rp</span>&nbsp;<span class="text-gray-800 font-semibold cart-price-qty">{{ cart.$extras.cart_groups * cart.product.price }}</span>
           <input type="hidden" name="" class="cart-price" value="{{cart.product.price}}">
           <div class="flex items-center justify-between mt-2">
@@ -55,6 +57,7 @@
   </div>
   @endeach
   <!-- End Cart Items -->
+  <div class="del-res"></div>
   <div class="pretty-checkbox flex py-2 px-4">
     <input type="checkbox" name="checkallcarts" id="checkallcarts"/>
     <span>Select all</span>
@@ -67,12 +70,83 @@
     <br>
     <span class="total-price text-orange-600 font-bold text-2xl">Rp &nbsp;</span><span id="total-price" class="total-price text-orange-600 font-bold text-2xl">{{ price }}</span>
   </main>
+  @each(cart in carts)
+  <script>
+    $(document).ready(function(){
+      
+      $("#cart-del{{ cart.product.id }}").submit(function(e){
+          var csrftoken = document.getElementsByName("_csrf")[0].value
+          console.log(e);
+          e.preventDefault();
+          $.ajax({
+            url:"{{ route('CartsController.destroy',[cart.product.id]) }}?_method=DELETE",
+            data:{
+              _csrf:csrftoken
+            },
+            type:"POST",
+            success:function(res){
+              document.getElementById("checkcartids{{ cart.product.id }}").checked = false
+              $('#cartProduct{{ cart.product.id }}').remove()
+              $('.cart-navi').append(`<div class="cart-count absolute top-0 right-0 left-4 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">${res.count}</div>`);
+              var qtyCount = document.querySelectorAll(".qtyclass")
+              var price = document.querySelectorAll(".cart-price");
+              var checkId = document.querySelectorAll(".checkcartids");
+              var cartLen = $(".cart-product").length
+              var check = $("input:checkbox[name=checkcartids]:checked").length;
+              $(".carts-qty").html(`&nbsp;(${check})`)
+              var totalRes = 0
+              checkId.forEach((v,i)=>{
+                if(checkId[i].checked){
+                  const qty = qtyCount[i];
+                  const qtyVal = qty.value
+                  const priceElement = price[i]
+                  const priceVal = priceElement.value
+                  const hitung = qtyVal * priceVal
+              
+                  totalRes += hitung
+                }
+              })
+              //console.log(totalRes);
+              document.getElementById("total-price").innerHTML = totalRes.toLocaleString("id");
+              //$(".del-res").append(`<input type="hidden" class="after-delete" value="${cartLen}" >`)
+              //console.log(cartLen);
+              //console.log(check);
+              if(check==cartLen){
+                  document.getElementById("checkallcarts").checked=true;
+                }
+                if(check<cartLen){
+                  document.getElementById("checkallcarts").checked=false;
+
+                }
+                if(check>0){
+                document.getElementById("cartAllRecords").disabled = false;
+                //document.getElementById("cartAllRecords").classList.toggle("")
+                
+                document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
+                }else{
+                  document.getElementById("cartAllRecords").disabled = true;
+                  document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
+                  $(".carts-qty").html(``)
+                }
+            },
+            error:function(res){
+              console.log(res)
+            }
+          })
+      })
+    })
+
+  </script>
+  @endeach
+
+
   <script>
     const cartList = document.querySelector(".cart-list");
     $(document).ready(function(){
       var qtyCount = document.querySelectorAll(".qtyclass")
       var price = document.querySelectorAll(".cart-price");
       var checkId = document.querySelectorAll(".checkcartids");
+      var cartCountLen = document.querySelectorAll(".cart-navi").length;
       //var check = $("input:checkbox[name=checkcartids]:checked").length;
       var priceCart = 0
       document.getElementById("total-price").innerHTML = priceCart.toLocaleString("id");
@@ -123,14 +197,18 @@
           }
         })
         //console.log(totalRes);
+        // console.log($(".after-delete").val())
+        // console.log(check + "masih aada")
+        // console.log(cartLen + "masih ada")
+        // console.log(cartCountLen + "cart count len")
+        // const smart = cartLen - 1
+        // const smartDel = $(".after-delete").val()
         document.getElementById("total-price").innerHTML = totalRes.toLocaleString("id");
-
         if(check==cartLen){
           document.getElementById("checkallcarts").checked=true;
         }
         if(check<cartLen){
           document.getElementById("checkallcarts").checked=false;
-
         }
         if(check>0){
         document.getElementById("cartAllRecords").disabled = false;
@@ -189,69 +267,5 @@
       })
     })
   </script>
-  @each(cart in carts)
-  <script>
-    $(document).ready(function(){
-      
-      $("#cart-del{{ cart.product.id }}").submit(function(e){
-          var csrftoken = document.getElementsByName("_csrf")[0].value
-          console.log(e);
-          e.preventDefault();
-          $.ajax({
-            url:"{{ route('CartsController.destroy',[cart.product.id]) }}?_method=DELETE",
-            data:{
-              _csrf:csrftoken
-            },
-            type:"POST",
-            success:function(res){
-              document.getElementById("checkcartids{{ cart.product.id }}").checked = false
-              $('#cartProduct{{ cart.product.id }}').remove()
-              $('.cart-navi').append(`<div class="cart-count absolute top-0 right-0 left-4 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs">${res.count}</div>`);
-              var qtyCount = document.querySelectorAll(".qtyclass")
-              var price = document.querySelectorAll(".cart-price");
-              var checkId = document.querySelectorAll(".checkcartids");
-              var cartLen = $(".cart-product").length
-              var check = $("input:checkbox[name=checkcartids]:checked").length;
-              $(".carts-qty").html(`&nbsp;(${check})`)
-
-              var totalRes = 0
-              checkId.forEach((v,i)=>{
-                if(checkId[i].checked){
-                  const qty = qtyCount[i];
-                  const qtyVal = qty.value
-                  const priceElement = price[i]
-                  const priceVal = priceElement.value
-                  const hitung = qtyVal * priceVal
-                  totalRes += hitung
-                }
-              })
-              //console.log(totalRes);
-              document.getElementById("total-price").innerHTML = totalRes.toLocaleString("id");
-              if(check==cartLen){
-                  document.getElementById("checkallcarts").checked=true;
-                }
-                if(check<cartLen){
-                  document.getElementById("checkallcarts").checked=false;
-
-                }
-                if(check>0){
-                document.getElementById("cartAllRecords").disabled = false;
-                //document.getElementById("cartAllRecords").classList.toggle("")
-                
-                document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(252, 61, 3)'
-                }else{
-                  document.getElementById("cartAllRecords").disabled = true;
-                  document.getElementById("cartAllRecords").style.backgroundColor = 'rgb(255, 157, 128)'
-                  $(".carts-qty").html(``)
-                }
-            },
-            error:function(res){
-              console.log(res)
-            }
-          })
-      })
-    })
-
-  </script>
-  @endeach
+  
 @endsection

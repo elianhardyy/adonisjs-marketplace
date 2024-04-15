@@ -52,18 +52,19 @@
             <img src="{{ product.image }}" alt="Product Image" class="w-full h-64 object-cover">
             <div class="p-4">
               <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ product.name }}</h3>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ product.store.name }}</h3>
               <p class="text-gray-600">{{ product.description }}</p>
               <div class="mt-4 flex items-center justify-between">
-                <span class="text-gray-800 font-semibold">{{ product.price }}</span>
+                <span>Rp</span><span class="text-gray-800 font-semibold price-product">{{ product.price }}</span>
                 <form id="myCart{{ product.id }}" class="myCart">
                   {{ csrfField() }}
-                  <input type="hidden" name="productId" id="" value="{{ product.id }}">
-                  <input type="hidden" name="storeId" id="" value="{{ product.store.id }}">
+                  <input type="hidden" name="productId" id="product{{ product.id }}" value="{{ product.id }}">
+                  <input type="hidden" name="storeId" id="store{{ product.store.id }}" value="{{ product.store.id }}">
                   @if(auth.user)
-                  <input type="hidden" name="userId" id="" value="{{ auth.user.id }}">
+                  <input type="hidden" name="userId" id="user{{ auth.user.id }}" value="{{ auth.user.id }}">
                   @endif
                   <button type="submit" class="btn-sub{{ product.id }} bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-4 rounded-full add-to-cart-btn">Checkout</button>
-                  <button type="submit" class="btn-sub{{ product.id }} bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full add-to-cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
+                  <button type="submit" class="btn-sub-cart{{ product.id }} bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full add-to-cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
                 </form>
               </div>
             </div>
@@ -88,6 +89,7 @@
   </div>
   @each(product in products)
   <script>
+    
     $(document).ready(function(){
       // .charAt(0).toUpperCase() + auth.user.username.slice(1)
      
@@ -115,5 +117,11 @@
   </script>
     
   @endeach
-
+  <script>
+    var productPrice = document.querySelectorAll(".price-product");
+    productPrice.forEach((v,i)=>{
+      const prodPrice = parseInt(v.innerHTML).toLocaleString("id");
+      productPrice[i].innerHTML = prodPrice
+    })
+  </script>
 @endsection

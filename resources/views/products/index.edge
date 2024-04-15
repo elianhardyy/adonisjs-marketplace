@@ -13,7 +13,10 @@
                 <p class="text-gray-600 mb-2">Kategori: {{ product.category.name }}</p>
                 <span>Rp&nbsp;</span><span class="text-gray-800 mb-2 product-price">{{ product.price }}</span>
                 <p class="text-gray-700">Kuantitas: {{ product.qty }}</p>
-                <a href="{{ route('ProductsController.detail',{slug:product.store.slug, pslug:product.slug}) }}">Detail</a>
+                <a href="{{ route('ProductsController.detail',{slug:product.store.slug, pslug:product.slug}) }}" class="btn bg-red-600 text-white rounded-md p-1">Detail</a>
+                @if(product.store.user.id === auth.user.id)
+                <a href="{{ route('ProductsController.edit',{slug:product.store.slug, pslug:product.slug}) }}" class="bg-green-600 text-white rounded-md p-1">Edit</a>
+                @endif
             </div>
         </div>
         @endeach

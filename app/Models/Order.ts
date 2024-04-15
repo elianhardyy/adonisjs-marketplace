@@ -15,6 +15,9 @@ export default class Order extends BaseModel {
   public qty:number
 
   @column()
+  public token:string
+
+  @column()
   public productId:number
 
   @column()

@@ -1,0 +1,65 @@
+@layout('layouts/main')
+@set('title','Edit Product')
+@section('body')
+<div class="container mt-16">
+
+    <div class="max-w-lg mx-auto bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-semibold mb-4">Edit Produk {{ product.name }}</h2>
+        <form action="{{ route('ProductsController.update',[product.id]) }}?_method=PUT" method="POST" enctype="multipart/form-data" >
+            {{ csrfField() }}
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Nama Produk</label>
+                <input type="text" id="name" name="name" required
+                    class="mt-1 p-2 w-full border rounded-md border-gray-300" value="{{ product.name }}">
+            </div>
+            <div class="mb-4">
+                <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                <textarea id="description" name="description" rows="3"
+                    class="mt-1 p-2 w-full border rounded-md border-gray-300">{{ product.description }}</textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="mb-4">
+                    <label for="quantity" class="block text-sm font-medium text-gray-700">Kuantitas</label>
+                    <input type="number" id="quantity" name="qty" required
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md" value="{{ product.qty }}">
+                </div>
+                <div class="mb-4">
+                    <label for="price" class="block text-sm font-medium text-gray-700">Harga</label>
+                    <input type="number" id="price" name="price" required
+                        class="mt-1 p-2 w-full border border-gray-300 rounded-md" value="{{ product.price }}">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="category" class="block text-sm font-medium text-gray-700">Kategori</label>
+                <select id="category" name="categoryId"
+                    class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="{{ product.category.id }}">{{ product.category.name }}</option>
+                    <option value="" disabled>---------------------------------</option>
+                    @each(category in categories)
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                    @endeach
+                    <!-- Tambahkan opsi kategori lainnya sesuai kebutuhan -->
+                </select>
+            </div>
+            <input type="hidden" name="oldImage" value="{{ product.image }}">
+            <img src="http://localhost:3333/{{product.image}}" alt="" width="100px">
+            <input type="hidden" name="storeId" id="" value="{{ store.id }}">
+            <div class="mb-4">
+                <input type="file" id="fileInput" class="hidden" name="image">
+            <label for="fileInput" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md cursor-pointer">
+            <i class="fa-solid fa-upload"></i>
+              Pilih Gambar
+            </label>
+            <span id="fileName" class="ml-2"></span>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit"
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Tambah Produk
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>
+@endsection

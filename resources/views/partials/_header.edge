@@ -6,19 +6,18 @@
           <span class="font-semibold">Your Logo</span>
         </div>
         <div class="hidden md:block">
-          <a href="#" class="text-white mr-4">Home</a>
+          <a href="/" class="text-white mr-4">Home</a>
           <a href="{{ route('StoresController.index') }}" class="text-white mr-4">Store</a>
           <div class="relative inline-block">
             <!-- Dropdown Services -->
-            <a href="#" class="text-white mr-4" id="servicesDropdownBtn">Services <i class="fas fa-chevron-down"></i></a>
-            <div id="servicesDropdown" class="hidden absolute bg-gray-800 text-white p-2 mt-2 rounded-md shadow-md">
-              <a href="#" class="block py-2">Service 1</a>
-              <a href="#" class="block py-2">Service 2</a>
-              <a href="#" class="block py-2">Service 3</a>
+            <a href="#" class="text-white mr-4" id="servicesDropdownBtn">Order <i class="fas fa-chevron-down"></i></a>
+            <div id="servicesDropdown" class="hidden absolute bg-gray-800 text-white p-2 mb-10 rounded-md shadow-md">
+              <a href="order/history" class="block py-2">History</a>
+            
             </div>
           </div>
           <a href="#" class="text-white mr-4">Contact</a>
-          <a href="#" class="text-gray-600 hover:text-gray-800 mr-4"><i class="fas fa-search"></i></a>
+          <a id="search-bar-lg" class="text-gray-600 hover:text-gray-800 mr-4"><i class="fas fa-search"></i></a>
           <a href="/cart" id="cart-nav" class="cart-navi text-gray-600 hover:text-gray-800 mr-4 relative">
             <i class="fas fa-shopping-cart"></i>
             <!-- Menambahkan informasi jumlah item di keranjang -->
@@ -62,19 +61,19 @@
       </div>
     </div>
     <div id="mobileMenu" class="hidden md:hidden">
-      <a href="#" class="block py-2 px-4 text-white">Home</a>
+      <a href="/" class="block py-2 px-4 text-white">Home</a>
       <a href="{{ route('StoresController.index') }}" class="block py-2 px-4 text-white">Store</a>
       <div class="relative inline-block">
         <!-- Mobile Dropdown Services -->
-        <a href="#" class="block py-2 px-4 text-white" id="servicesDropdownBtnMobile">Services <i class="fas fa-chevron-down"></i></a>
+        <a href="#" class="block py-2 px-4 text-white" id="servicesDropdownBtnMobile">Order <i class="fas fa-chevron-down"></i></a>
         <div id="servicesDropdownMobile" class="hidden bg-gray-800 text-white p-2 mt-2 rounded-md shadow-md">
-          <a href="#" class="block py-2">Service 1</a>
+          <a href="order/history" class="block py-2">History</a>
           <a href="#" class="block py-2">Service 2</a>
           <a href="#" class="block py-2">Service 3</a>
         </div>
       </div>
       <a href="#" class="block py-2 px-4 text-white">Contact</a> 
-      <a href="#" class="text-white hover:text-gray-300 mr-4"><i class="fas fa-search"></i></a>
+      <div id="search-bar" class="text-white hover:text-gray-300 mr-4"><i class="fas fa-search"></i></div>
       
       <hr class="border-gray-600 my-1">
       @if(auth.user)

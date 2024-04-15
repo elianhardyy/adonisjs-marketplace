@@ -1,0 +1,7 @@
+@if(products.length > 0)
+    @each(se as products)
+      <li>{{ se.name }}</li>
+    @endeach
+@else
+    <li>No Result Found</li>
+@endif

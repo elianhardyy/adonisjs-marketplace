@@ -40,11 +40,10 @@ Route.group(()=>{
   Route.get('/cart/length','CartsController.length')
   Route.get('/store/:slug/product/create','ProductsController.create').prefix('dashboard');
   Route.get('/store/:slug/product/:pslug','ProductsController.detail').prefix('dashboard');
+  Route.get('/store/:slug/product/:pslug/edit','ProductsController.edit').prefix('dashboard');
   Route.get('/read/:id','ProductsController.readComment');
   Route.get('/order','OrdersController.index');
-  Route.get("/order/history",async({view})=>{
-    return view.render('order.history');
-  })
+  Route.get("/order/history",'OrdersController.history');
 
   Route.post('/store','StoresController.store')
   Route.post('/product/create','ProductsController.store')
@@ -52,9 +51,11 @@ Route.group(()=>{
   Route.post('/product/cart','CartsController.store')
   Route.post('/order','OrdersController.store')
 
+  Route.put('/product/:id','ProductsController.update')
+
   Route.delete("/cart/delete/:id",'CartsController.destroy')
 }).middleware(['auth','role:user'])
-
+Route.get('/search/product','ProductsController.search');
 
 Route.post('/api/midtrans-callback','OrdersController.callback');
 import Config from '@ioc:Adonis/Core/Config'

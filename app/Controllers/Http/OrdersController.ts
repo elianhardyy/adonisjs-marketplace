@@ -8,6 +8,13 @@ import Cart from 'App/Models/Cart';
 
 export default class OrdersController {
     public async store({request,response}:HttpContextContract){
+        const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let random : string = ''
+        const charactersLength = characters.length;
+        for(let j=0; j<=8; j++){
+            random += characters.charAt(Math.floor(Math.random() * charactersLength))
+        }
+
         const product = request.input('product_id');
         const qty = request.input('qty');
         const store = request.input('store_id');
@@ -22,6 +29,7 @@ export default class OrdersController {
                     id:uuidv4(),
                     productId:productarr,
                     qty:qtyarr,
+                    token:random,
                     storeId:storearr,
                     userId:userarr
                 }
@@ -52,10 +60,10 @@ export default class OrdersController {
             price += o.product.price * o.qty
         });
         console.log(price);
-        var uuid = ordersingle?.id;
+        var token = ordersingle?.token;
         let parameter = {
             "transaction_details": {
-                "order_id": uuid,
+                "order_id": token,
                 "gross_amount": price
             },
             "credit_card":{
@@ -69,7 +77,7 @@ export default class OrdersController {
         const transaction = await snap.createTransaction(parameter);
         const transactionToken = await transaction.token;
         
-        return view.render('order.checkout',{snapToken:transactionToken,order});
+        return view.render('order.checkout',{snapToken:transactionToken,order,token});
     }
 
     public async callback({request,response}:HttpContextContract){
@@ -77,7 +85,7 @@ export default class OrdersController {
         const hash = crypto.createHash('sha512').update(request.input('order_id')+request.input('status_code')+request.input('gross_amount')+serverKey,"utf-8").digest('hex')
         if(hash == request.input("signature_key")){
             if(request.input("transaction_status")== 'capture'){
-                const callback = await Order.findBy('id',request.input("order_id"));
+                const callback = await Order.findBy('token',request.input("order_id"));
                 const userId : any= callback?.userId;
                 await Order.query().where('user_id',userId).update({status:"paid"});
                 const orderProduct = await Order.query().where("user_id",userId).where('status','paid');
@@ -92,9 +100,31 @@ export default class OrdersController {
                         }
                     }
                 });
-                return response.json({msg:"heheh"})
+                return response.json({msg:"success"})
+            }
+            if(request.input("transaction_status")== 'pending'){
+                const callback = await Order.findBy('token',request.input("order_id"));
+                const userId : any= callback?.userId;
+                await Order.query().where('user_id',userId).update({status:"pending"});
+                return response.json({msg:"pending"})
+            }
+            if(request.input("transaction_status")== 'cancel'){
+                const callback = await Order.findBy('token',request.input("order_id"));
+                const userId : any= callback?.userId;
+                await Order.query().where('user_id',userId).update({status:"cancel"});
+                return response.json({msg:"cancel"})
             }
         }
+    }
+
+    public async history({view,auth}:HttpContextContract){
+        const unpaid = await Order.query().where('status','not');
+        const paids = await Order.query().preload('product').preload('store').where('status','paid');
+        const pending = await Order.query().where('status','pending').preload('product').preload('store');
+        const cancel = await Order.query().where('status','cancel').preload('product').preload('store');
+        const userId:any = auth.user?.id
+        const carts = await Cart.query().select('product_id','user_id').count('product_id as cart_groups').preload('user').preload('product').where('user_id',userId).groupBy('product_id');
+        return view.render("order.history",{paids,pending,cancel,unpaid,carts})
     }
 
 

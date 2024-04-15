@@ -26,11 +26,11 @@ document.getElementById('menuBtn').addEventListener('click', function() {
   const servicesDropdown = document.getElementById('servicesDropdown');
   servicesDropdownBtn.addEventListener('mouseover', function() {
     servicesDropdown.classList.remove('hidden');
-    servicesDropdownBtn.innerHTML = 'Services <i class="fas fa-chevron-up"></i>';
+    servicesDropdownBtn.innerHTML = 'Order <i class="fas fa-chevron-up"></i>';
   });
   servicesDropdown.addEventListener('mouseout', function() {
     servicesDropdown.classList.add('hidden');
-    servicesDropdownBtn.innerHTML = 'Services <i class="fas fa-chevron-down"></i>';
+    servicesDropdownBtn.innerHTML = 'Order <i class="fas fa-chevron-down"></i>';
   });
 
   // Toggle services dropdown for mobile
@@ -39,9 +39,9 @@ document.getElementById('menuBtn').addEventListener('click', function() {
   servicesDropdownBtnMobile.addEventListener('click', function() {
     servicesDropdownMobile.classList.toggle('hidden');
     if (!servicesDropdownMobile.classList.contains('hidden')) {
-      servicesDropdownBtnMobile.innerHTML = 'Services <i class="fas fa-chevron-up"></i>';
+      servicesDropdownBtnMobile.innerHTML = 'Order <i class="fas fa-chevron-up"></i>';
     } else {
-      servicesDropdownBtnMobile.innerHTML = 'Services <i class="fas fa-chevron-down"></i>';
+      servicesDropdownBtnMobile.innerHTML = 'Order <i class="fas fa-chevron-down"></i>';
     }
   });
 

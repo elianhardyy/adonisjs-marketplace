@@ -1,55 +1,120 @@
 @layout('layouts/main')
 @set('title','Checkout')
 @section('body')
-<div class="container mx-auto">
-    <div class="flex justify-center my-8">
-      <div class="w-full sm:w-3/4 lg:w-1/2">
-        <ul class="flex border-b">
-          <li class="mr-1">
-            <a class="tablink py-2 px-4 block text-blue-500 border-b-2 border-blue-500">All</a>
-          </li>
-          <li class="mr-1">
-            <a class="tablink py-2 px-4 block text-gray-500 hover:text-blue-500 hover:border-blue-500">Pending</a>
-          </li>
-          <li class="mr-1">
-            <a class="tablink py-2 px-4 block text-gray-500 hover:text-blue-500 hover:border-blue-500">Paid</a>
-          </li>
-          <li class="mr-1">
-            <a class="tablink py-2 px-4 block text-gray-500 hover:text-blue-500 hover:border-blue-500">Cancel</a>
-          </li>
-        </ul>
-        <div class="mt-4">
-          <!-- Konten dari setiap tab akan ditempatkan di sini -->
-          <!-- Contoh: -->
-          <div class="all-tab tab-content">
-            <p>Konten untuk tab "All" akan ditampilkan di sini.</p>
+<div class="tabs">
+    <button class="tablinks active" onclick="openTab(event, 'unpaid')">All</button>
+    <button class="tablinks" onclick="openTab(event, 'paid')">Paid</button>
+    <button class="tablinks" onclick="openTab(event, 'pending')">Pending</button>
+    <button class="tablinks" onclick="openTab(event, 'cancel')">Canceled</button>
+  </div>
+  
+  <div id="unpaid" class="tabcontent">
+    <div class="max-w-md mx-auto bg-white rounded-md shadow-md overflow-hidden">
+        <div class="px-4 py-2 bg-gray-200 text-gray-800 font-bold uppercase">
+          Transaction History
+        </div>
+        <div class="divide-y divide-gray-200">
+          @each(pa in paids)
+          <div class="px-4 py-3">
+            <p class="text-sm text-gray-600">Token: <span class="font-bold">{{ pa.token }}</span></p>
+            <p class="text-sm text-gray-600">Date: <span class="font-bold">2024-03-13</span></p>
+            <p class="text-sm text-gray-600">Amount: <span class="font-bold">{{ pa.qty }}</span></p>
+            <p class="text-sm text-gray-600">Status: <span class="font-bold text-green-600">Paid</span></p>
+          </div>  
+          @endeach
+          <div class="px-4 py-3">
+            <p class="text-sm text-gray-600">Date: <span class="font-bold">2024-03-12</span></p>
+            <p class="text-sm text-gray-600">Amount: <span class="font-bold">$50.00</span></p>
+            <p class="text-sm text-gray-600">Status: <span class="font-bold text-yellow-600">Pending</span></p>
           </div>
-          <div class="pending-tab tab-content hidden">
-            <p>Konten untuk tab "Pending" akan ditampilkan di sini.</p>
-          </div>
-          <div class="paid-tab tab-content hidden">
-            <p>Konten untuk tab "Paid" akan ditampilkan di sini.</p>
-          </div>
-          <div class="cancel-tab tab-content hidden">
-            <p>Konten untuk tab "Cancel" akan ditampilkan di sini.</p>
+          <div class="px-4 py-3">
+            <p class="text-sm text-gray-600">Date: <span class="font-bold">2024-03-11</span></p>
+            <p class="text-sm text-gray-600">Amount: <span class="font-bold">$80.00</span></p>
+            <p class="text-sm text-gray-600">Status: <span class="font-bold text-red-600">Canceled</span></p>
           </div>
         </div>
       </div>
+  </div>
+  
+  <div id="paid" class="tabcontent">
+    <h3>Paid Orders</h3>
+    <div class="max-w-md mx-auto bg-white rounded-md shadow-md overflow-hidden">
+      <div class="px-4 py-2 bg-gray-200 text-gray-800 font-bold uppercase">
+        Transaction History
+      </div>
+      <div class="divide-y divide-gray-200">
+        @each(pa in paids)
+        <div class="px-4 py-3">
+          <p class="text-sm text-gray-600">Token: <span class="font-bold">{{ pa.token }}</span></p>
+          <p class="text-sm text-gray-600">Date: <span class="font-bold">2024-03-13</span></p>
+          <p class="text-sm text-gray-600">Amount: <span class="font-bold">{{ pa.qty }}</span></p>
+          <p class="text-sm text-gray-600">Status: <span class="font-bold text-green-600">Paid</span></p>
+        </div>  
+        @endeach
+      </div>
     </div>
   </div>
-  <script>
-    $(document).ready(function(){
-      $(".tablink").click(function(){
-        $(".tablink").removeClass("active");
-        $(this).addClass("active");
   
-        $(".tab-content").removeClass("active");
-        var tabId = $(this).attr("href");
-        $(tabId).addClass("active");
-        
-        return false;
-      });
-    });
-  </script>
+  <div id="pending" class="tabcontent">
+    <h3>Pending Orders</h3>
+    <div class="max-w-md mx-auto bg-white rounded-md shadow-md overflow-hidden">
+      <div class="px-4 py-2 bg-gray-200 text-gray-800 font-bold uppercase">
+        Transaction History
+      </div>
+      <div class="divide-y divide-gray-200">
+        @each(pa in pending)
+        <div class="px-4 py-3">
+          <p class="text-sm text-gray-600">Token: <span class="font-bold">{{ pa.token }}</span></p>
+          <p class="text-sm text-gray-600">Date: <span class="font-bold">2024-03-13</span></p>
+          <p class="text-sm text-gray-600">Amount: <span class="font-bold">{{ pa.qty }}</span></p>
+          <p class="text-sm text-gray-600">Status: <span class="font-bold text-yellow-600">Pending</span></p>
+        </div>  
+        @endeach
+      </div>
+    </div>
+  </div>
+  
+  <div id="cancel" class="tabcontent">
+    <h3>Canceled Orders</h3>
+    <div class="max-w-md mx-auto bg-white rounded-md shadow-md overflow-hidden">
+      <div class="px-4 py-2 bg-gray-200 text-gray-800 font-bold uppercase">
+        Transaction History
+      </div>
+      <div class="divide-y divide-gray-200">
+        @each(pa in cancel)
+        <div class="px-4 py-3">
+          <p class="text-sm text-gray-600">Token: <span class="font-bold">{{ pa.token }}</span></p>
+          <p class="text-sm text-gray-600">Date: <span class="font-bold">2024-03-13</span></p>
+          <p class="text-sm text-gray-600">Amount: <span class="font-bold">{{ pa.qty }}</span></p>
+          <p class="text-sm text-gray-600">Status: <span class="font-bold text-red-600">Cancel</span></p>
+        </div>  
+        @endeach
+      </div>
+    </div>
+  </div>
+
+<script>
+    // Open the default tab when the page loads
+document.getElementById("unpaid").style.display = "block";
+
+function openTab(evt, tabName) {
+  // Hide all tab content
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Deactivate all tab links
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].classList.remove("active");
+  }
+
+  // Show the clicked tab, and mark the button as active
+  document.getElementById(tabName).style.display = "block";
+  evt.currentTarget.classList.add("active");
+}
+</script>
 
 @endsection

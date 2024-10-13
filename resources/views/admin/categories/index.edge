@@ -32,12 +32,15 @@
                 <td class="py-3 px-4">{{ cat.name }}</td>
                 <td class="py-3 px-4"><img src="{{ cat.image }}" alt="" width="30px"></td>
                 <td class="py-3 px-4">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" title="Edit">
+                    <a href="category/{{ cat.slug }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" title="Edit">
                         <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" title="Delete">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    </a>
+                    <form action="{{ route('CategoriesController.destroy',[cat.id]) }}?_method=DELETE" method="POST">
+                        {{ csrfField() }}
+                        <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full" title="Delete">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </form>
                 </td>
             </tr>
             @endeach

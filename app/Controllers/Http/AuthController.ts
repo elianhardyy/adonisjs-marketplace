@@ -9,7 +9,6 @@ export default class AuthController {
     public loginView({view}:HttpContextContract){
         return view.render('auth.login')
     }
-
     public async register({request,response,auth}:HttpContextContract){
         const userShcema = schema.create({
             username:schema.string({trim:true,escape:true},[rules.required(),rules.trim(),rules.escape()]),

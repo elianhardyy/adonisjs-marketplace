@@ -8,7 +8,7 @@
         <h1 class="text-4xl font-bold text-gray-800 mb-4">Welcome 
           @if(auth.user)
             @if(auth.user.isAdmin)
-              Hello {{ auth.user.email }} Admin
+              Hello {{ auth.user.username }}/ Admin
             @else
             {{ auth.user.username }} 
           @endif

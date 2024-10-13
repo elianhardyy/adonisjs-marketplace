@@ -26,6 +26,7 @@ Route.group(()=>{
   Route.post('/category','CategoriesController.store')
   Route.get('/category/:slug','CategoriesController.edit')
   Route.put('/category/:id','CategoriesController.update')
+  Route.delete('/category/delete/:id','CategoriesController.destroy')
 }).middleware(['auth','role:admin'])
 
 Route.post('/register','AuthController.register')
@@ -54,7 +55,7 @@ Route.group(()=>{
   Route.put('/product/:id','ProductsController.update')
 
   Route.delete("/cart/delete/:id",'CartsController.destroy')
-}).middleware(['auth','role:user'])
+}).middleware(['auth','role:user,admin'])
 Route.get('/search/product','ProductsController.search');
 
 Route.post('/api/midtrans-callback','OrdersController.callback');

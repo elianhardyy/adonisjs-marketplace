@@ -10,13 +10,18 @@
           <a href="{{ route('StoresController.index') }}" class="text-white mr-4">Store</a>
           <div class="relative inline-block">
             <!-- Dropdown Services -->
-            <a href="#" class="text-white mr-4" id="servicesDropdownBtn">Order <i class="fas fa-chevron-down"></i></a>
+            <a href="/order" class="text-white mr-4" id="servicesDropdownBtn">Order <i class="fas fa-chevron-down"></i></a>
             <div id="servicesDropdown" class="hidden absolute bg-gray-800 text-white p-2 mb-10 rounded-md shadow-md">
               <a href="order/history" class="block py-2">History</a>
             
             </div>
           </div>
-          <a href="#" class="text-white mr-4">Contact</a>
+          @if(auth.user)
+          @if(auth.user.isAdmin)
+          <a href="/category" class="text-white mr-4">Category</a>
+          @endif
+          @endif
+          <a href="order/history" class="text-white mr-4">History</a>
           <a id="search-bar-lg" class="text-gray-600 hover:text-gray-800 mr-4"><i class="fas fa-search"></i></a>
           <a href="/cart" id="cart-nav" class="cart-navi text-gray-600 hover:text-gray-800 mr-4 relative">
             <i class="fas fa-shopping-cart"></i>

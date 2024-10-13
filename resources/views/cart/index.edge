@@ -244,6 +244,7 @@
           var item = $('#userItem'+val).val()
           user_ids.push(item)
         })
+        console.log(products_ids);
         var csrftoken = document.getElementsByName("_csrf")[0].value;
         $.ajax({
           url:"{{ route('OrdersController.store') }}",

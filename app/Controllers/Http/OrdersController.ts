@@ -14,7 +14,6 @@ export default class OrdersController {
         for(let j=0; j<=8; j++){
             random += characters.charAt(Math.floor(Math.random() * charactersLength))
         }
-
         const product = request.input('product_id');
         const qty = request.input('qty');
         const store = request.input('store_id');
